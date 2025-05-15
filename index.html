@@ -176,6 +176,28 @@
             transform: rotateY(180deg);
         }
         
+        /* 為翻轉卡片的文字添加白色背景填充 */
+        .flip-card-back h3,
+        .flip-card-back li,
+        .flip-card-back p {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 2px 5px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        
+        /* 確保移動設備上的按鈕更容易點擊 */
+        @media (max-width: 768px) {
+            .btn-swing, a[href^="https://docs.google.com"] {
+                padding: 12px 20px !important;
+                margin: 15px auto !important;
+                display: block !important;
+                width: 80% !important;
+                text-align: center !important;
+                font-size: 1.2rem !important;
+            }
+        }
+        
         .vintage-pattern {
             background-image: radial-gradient(#f0f0f0 10%, transparent 11%),
                             radial-gradient(#f0f0f0 10%, transparent 11%);
@@ -399,6 +421,9 @@
             <header class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold mb-4" itemprop="name">常態課程</h2>
                 <p class="text-lg max-w-2xl mx-auto" itemprop="description">我們提供各種程度的搖擺舞課程，從基礎入門到進階技巧，讓你盡情享受舞蹈的樂趣。</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfnVjXvO_8AX7z2bd8W8a0eDX95_BRLSL_Jw7vwpuL8x608uA/viewform" target="_blank" class="mt-6 inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-8 rounded-lg text-lg btn-swing shadow-lg transition-all" style="z-index: 10; position: relative;">
+                    立即報名
+                </a>
             </header>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12" role="list" aria-label="舞蹈課程列表">
@@ -677,7 +702,7 @@
                                     </svg>
                                 </a>
                                 <!-- New YouTube Icon -->
-                                <a href="https://www.youtube.com/@JFSwing" target="_blank" class="bg-red-600 text-white p-3 rounded-full hover:bg-red-700 transition-colors">
+                                <a href="https://www.youtube.com/@jfswing5595" target="_blank" class="bg-red-600 text-white p-3 rounded-full hover:bg-red-700 transition-colors">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
                                     </svg>
@@ -692,7 +717,7 @@
                             <div class="flex space-x-4">
                                 <a href="https://www.facebook.com/jfswing.tw?locale=zh_TW" target="_blank" class="btn-swing bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md">Facebook</a>
                                 <a href="https://www.instagram.com/swing_jf/" target="_blank" class="btn-swing bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded-md">Instagram</a>
-                                <a href="https://www.youtube.com/@JFSwing" target="_blank" class="btn-swing bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md">YouTube</a>
+                                <a href="https://www.youtube.com/@jfswing5595" target="_blank" class="btn-swing bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md">YouTube</a>
                             </div>
                         </div>
                     </div>
