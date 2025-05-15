@@ -1,0 +1,822 @@
+<html lang="zh-TW"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JFSwing - Swing Dance Organization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=Poppins:wght@300;400;600&amp;display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: #333;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .vintage-border {
+            border: 2px solid #333;
+            box-shadow: 5px 5px 0px #333;
+        }
+        
+        .flip-card {
+            perspective: 1000px;
+            height: 300px;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 0.5rem;
+        }
+        
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        
+        .vintage-pattern {
+            background-image: radial-gradient(#f0f0f0 10%, transparent 11%),
+                            radial-gradient(#f0f0f0 10%, transparent 11%);
+            background-size: 10px 10px;
+            background-position: 0 0, 30px 30px;
+            background-repeat: repeat;
+        }
+        
+        .dancing-element {
+            animation: dance 3s infinite alternate ease-in-out;
+        }
+        
+        @keyframes dance {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-10px) rotate(5deg); }
+        }
+        
+        .btn-swing {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-swing:hover {
+            transform: rotate(-2deg) scale(1.05);
+        }
+        
+        .record-spin {
+            animation: spin 8s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        #codeModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        #codeContent {
+            background-color: #f8f8f8;
+            margin: 5% auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 1200px;
+            border-radius: 8px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close-btn:hover {
+            color: #000;
+        }
+        
+        /* Calendar Styles */
+        .calendar {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .calendar th {
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .calendar td {
+            padding: 10px;
+            text-align: center;
+            height: 60px;
+            vertical-align: top;
+            transition: all 0.2s ease;
+        }
+        
+        .calendar td:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .calendar .event {
+            position: relative;
+        }
+        
+        .calendar .event::after {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background-color: #FFD166;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .calendar .event-important::after {
+            background-color: #EF476F;
+        }
+        
+        .calendar .today {
+            background-color: #f8f8f8;
+            font-weight: bold;
+            color: #EF476F;
+        }
+        
+        .calendar .other-month {
+            color: #ccc;
+        }
+        
+        .event-tooltip {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+            width: 200px;
+            text-align: left;
+        }
+        
+        .event:hover .event-tooltip {
+            display: block;
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width: 640px){.container{max-width:640px}}@media (min-width: 768px){.container{max-width:768px}}@media (min-width: 1024px){.container{max-width:1024px}}@media (min-width: 1280px){.container{max-width:1280px}}@media (min-width: 1536px){.container{max-width:1536px}}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.bottom-20{bottom:5rem}.left-10{left:2.5rem}.right-10{right:2.5rem}.top-0{top:0px}.top-20{top:5rem}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-10{margin-bottom:2.5rem}.mb-12{margin-bottom:3rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mr-3{margin-right:0.75rem}.mr-4{margin-right:1rem}.mt-12{margin-top:3rem}.mt-16{margin-top:4rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.mr-1{margin-right:0.25rem}.mt-1{margin-top:0.25rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-3{height:0.75rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-80{height:20rem}.h-full{height:100%}.h-2{height:0.5rem}.w-3{width:0.75rem}.w-5{width:1.25rem}.w-6{width:1.5rem}.w-full{width:100%}.w-2{width:0.5rem}.max-w-2xl{max-width:42rem}.flex-grow{flex-grow:1}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-10{gap:2.5rem}.gap-4{gap:1rem}.gap-8{gap:2rem}.space-x-2 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.5rem * var(--tw-space-x-reverse));margin-left:calc(0.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-4 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1rem * var(--tw-space-x-reverse));margin-left:calc(1rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-8 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(2rem * var(--tw-space-x-reverse));margin-left:calc(2rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-6 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded{border-radius:0.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.rounded-l-md{border-top-left-radius:0.375rem;border-bottom-left-radius:0.375rem}.rounded-r-md{border-top-right-radius:0.375rem;border-bottom-right-radius:0.375rem}.border{border-width:1px}.border-t{border-top-width:1px}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.border-gray-800{--tw-border-opacity:1;border-color:rgb(31 41 55 / var(--tw-border-opacity, 1))}.bg-black{--tw-bg-opacity:1;background-color:rgb(0 0 0 / var(--tw-bg-opacity, 1))}.bg-blue-500{--tw-bg-opacity:1;background-color:rgb(59 130 246 / var(--tw-bg-opacity, 1))}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.bg-gray-900{--tw-bg-opacity:1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1))}.bg-green-500{--tw-bg-opacity:1;background-color:rgb(34 197 94 / var(--tw-bg-opacity, 1))}.bg-orange-500{--tw-bg-opacity:1;background-color:rgb(249 115 22 / var(--tw-bg-opacity, 1))}.bg-pink-500{--tw-bg-opacity:1;background-color:rgb(236 72 153 / var(--tw-bg-opacity, 1))}.bg-pink-600{--tw-bg-opacity:1;background-color:rgb(219 39 119 / var(--tw-bg-opacity, 1))}.bg-purple-500{--tw-bg-opacity:1;background-color:rgb(168 85 247 / var(--tw-bg-opacity, 1))}.bg-purple-600{--tw-bg-opacity:1;background-color:rgb(147 51 234 / var(--tw-bg-opacity, 1))}.bg-teal-500{--tw-bg-opacity:1;background-color:rgb(20 184 166 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-yellow-100{--tw-bg-opacity:1;background-color:rgb(254 249 195 / var(--tw-bg-opacity, 1))}.bg-yellow-400{--tw-bg-opacity:1;background-color:rgb(250 204 21 / var(--tw-bg-opacity, 1))}.bg-yellow-50{--tw-bg-opacity:1;background-color:rgb(254 252 232 / var(--tw-bg-opacity, 1))}.bg-yellow-500{--tw-bg-opacity:1;background-color:rgb(234 179 8 / var(--tw-bg-opacity, 1))}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.p-8{padding:2rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pt-8{padding-top:2rem}.text-left{text-align:left}.text-center{text-align:center}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-green-500{--tw-text-opacity:1;color:rgb(34 197 94 / var(--tw-text-opacity, 1))}.text-orange-500{--tw-text-opacity:1;color:rgb(249 115 22 / var(--tw-text-opacity, 1))}.text-pink-500{--tw-text-opacity:1;color:rgb(236 72 153 / var(--tw-text-opacity, 1))}.text-purple-500{--tw-text-opacity:1;color:rgb(168 85 247 / var(--tw-text-opacity, 1))}.text-teal-500{--tw-text-opacity:1;color:rgb(20 184 166 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-yellow-600{--tw-text-opacity:1;color:rgb(202 138 4 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:bg-blue-700:hover{--tw-bg-opacity:1;background-color:rgb(29 78 216 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-100:hover{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-300:hover{--tw-bg-opacity:1;background-color:rgb(209 213 219 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-800:hover{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-900:hover{--tw-bg-opacity:1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1))}.hover\:bg-orange-600:hover{--tw-bg-opacity:1;background-color:rgb(234 88 12 / var(--tw-bg-opacity, 1))}.hover\:bg-pink-700:hover{--tw-bg-opacity:1;background-color:rgb(190 24 93 / var(--tw-bg-opacity, 1))}.hover\:bg-purple-700:hover{--tw-bg-opacity:1;background-color:rgb(126 34 206 / var(--tw-bg-opacity, 1))}.hover\:bg-teal-600:hover{--tw-bg-opacity:1;background-color:rgb(13 148 136 / var(--tw-bg-opacity, 1))}.hover\:bg-yellow-600:hover{--tw-bg-opacity:1;background-color:rgb(202 138 4 / var(--tw-bg-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.hover\:text-yellow-600:hover{--tw-text-opacity:1;color:rgb(202 138 4 / var(--tw-text-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-yellow-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(234 179 8 / var(--tw-ring-opacity, 1))}@media (min-width: 768px){.md\:mb-0{margin-bottom:0px}.md\:flex{display:flex}.md\:hidden{display:none}.md\:h-96{height:24rem}.md\:w-1\/2{width:50%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:py-24{padding-top:6rem;padding-bottom:6rem}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}.md\:text-4xl{font-size:2.25rem;line-height:2.5rem}.md\:text-6xl{font-size:3.75rem;line-height:1}}</style><style id="_goober"> .go1475592160{height:0;}.go1671063245{height:auto;}.go1888806478{display:flex;flex-wrap:wrap;flex-grow:1;}@media (min-width:600px){.go1888806478{flex-grow:initial;min-width:288px;}}.go167266335{background-color:#313131;font-size:0.875rem;line-height:1.43;letter-spacing:0.01071em;color:#fff;align-items:center;padding:6px 16px;border-radius:4px;box-shadow:0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12);}.go3162094071{padding-left:20px;}.go3844575157{background-color:#313131;}.go1725278324{background-color:#43a047;}.go3651055292{background-color:#d32f2f;}.go4215275574{background-color:#ff9800;}.go1930647212{background-color:#2196f3;}.go946087465{display:flex;align-items:center;padding:8px 0;}.go703367398{display:flex;align-items:center;margin-left:auto;padding-left:16px;margin-right:-8px;}.go3963613292{width:100%;position:relative;transform:translateX(0);top:0;right:0;bottom:0;left:0;min-width:288px;}.go1141946668{box-sizing:border-box;display:flex;max-height:100%;position:fixed;z-index:1400;height:auto;width:auto;transition:top 300ms ease 0ms,right 300ms ease 0ms,bottom 300ms ease 0ms,left 300ms ease 0ms,max-width 300ms ease 0ms;pointer-events:none;max-width:calc(100% - 40px);}.go1141946668 .notistack-CollapseWrapper{padding:6px 0px;transition:padding 300ms ease 0ms;}@media (max-width:599.95px){.go1141946668{width:100%;max-width:calc(100% - 32px);}}.go3868796639 .notistack-CollapseWrapper{padding:2px 0px;}.go3118922589{top:14px;flex-direction:column;}.go1453831412{bottom:14px;flex-direction:column-reverse;}.go4027089540{left:20px;}@media (min-width:600px){.go4027089540{align-items:flex-start;}}@media (max-width:599.95px){.go4027089540{left:16px;}}.go2989568495{right:20px;}@media (min-width:600px){.go2989568495{align-items:flex-end;}}@media (max-width:599.95px){.go2989568495{right:16px;}}.go4034260886{left:50%;transform:translateX(-50%);}@media (min-width:600px){.go4034260886{align-items:center;}}</style></head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white py-4 px-6 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="record-spin mr-3">
+                    <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" fill="#333"></circle>
+                        <circle cx="50" cy="50" r="20" fill="#f8f8f8"></circle>
+                        <circle cx="50" cy="50" r="5" fill="#333"></circle>
+                    </svg>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-bold">JFSwing</h1>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="hover:text-yellow-600 transition-colors">首頁</a>
+                <a href="#classes" class="hover:text-yellow-600 transition-colors">常態課程</a>
+                <a href="#workshops" class="hover:text-yellow-600 transition-colors">工作坊</a>
+                <a href="#contact" class="hover:text-yellow-600 transition-colors">聯絡我們</a>
+            </div>
+            <button class="md:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="py-16 md:py-24 px-6 relative overflow-hidden">
+        <div class="container mx-auto flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h2 class="text-4xl md:text-6xl font-bold mb-6">舞動生活，<br><span class="text-yellow-600">Swing</span> 出精彩！</h2>
+                <p class="text-lg mb-8">加入我們的搖擺舞社群，體驗復古風情與現代活力的完美結合。無論你是初學者還是進階舞者，這裡都有適合你的課程。</p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#classes" class="btn-swing bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-md vintage-border">探索課程</a>
+                    <a href="#contact" class="btn-swing bg-white hover:bg-gray-100 text-yellow-600 font-bold py-3 px-6 rounded-md vintage-border">聯絡我們</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 relative">
+                <div class="relative w-full h-80 md:h-96">
+                    <svg class="w-full h-full" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="200" cy="200" r="180" fill="#FFD166"></circle>
+                        <g class="dancing-element">
+                            <!-- Stylized dancing couple silhouette -->
+                            <path d="M150,120 C180,100 220,100 250,120 C270,135 280,160 275,190 C270,220 250,240 220,250 C200,255 180,255 160,250 C130,240 110,220 105,190 C100,160 120,135 150,120 Z" fill="#333"></path>
+                            <path d="M180,140 C190,135 210,135 220,140 C230,145 235,155 233,170 C230,185 220,195 205,200 C195,203 185,203 175,200 C160,195 150,185 147,170 C145,155 150,145 160,140 C165,137 175,137 180,140 Z" fill="#fff"></path>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <!-- Decorative elements -->
+        <div class="absolute top-20 left-10 dancing-element" style="animation-delay: 0.5s;">
+            <svg width="30" height="30" viewBox="0 0 100 100" fill="none">
+                <polygon points="50,0 61,35 100,35 69,57 82,91 50,70 18,91 31,57 0,35 39,35" fill="#EF476F"></polygon>
+            </svg>
+        </div>
+        <div class="absolute bottom-20 right-10 dancing-element" style="animation-delay: 1s;">
+            <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
+                <polygon points="50,0 61,35 100,35 69,57 82,91 50,70 18,91 31,57 0,35 39,35" fill="#06D6A0"></polygon>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Classes Section -->
+    <section id="classes" class="py-16 px-6 bg-gray-50">
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">常態課程</h2>
+                <p class="text-lg max-w-2xl mx-auto">我們提供各種程度的搖擺舞課程，從基礎入門到進階技巧，讓你盡情享受舞蹈的樂趣。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Flip Card 1 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-blue-500 text-white p-6 flex flex-col justify-center items-center vintage-border">
+                            <h3 class="text-2xl font-bold mb-4">Lindy Hop 入門</h3>
+                            <p class="text-center">適合初學者的基礎搖擺舞課程</p>
+                            <p class="mt-4 text-sm">翻轉卡片查看詳情</p>
+                        </div>
+                        <div class="flip-card-back bg-white p-6 flex flex-col justify-center items-center vintage-border">
+                            <h3 class="text-xl font-bold mb-3 text-blue-500">課程內容</h3>
+                            <ul class="text-sm text-left space-y-2">
+                                <li>• 基本步伐與節奏感培養</li>
+                                <li>• 簡單的舞蹈組合與轉換</li>
+                                <li>• 舞伴間的默契建立</li>
+                            </ul>
+                            <p class="mt-4 font-bold">每週二 19:30-21:00</p>
+                            <p class="text-blue-500 font-bold mt-2">$2,000 / 8堂課</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Flip Card 2 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-pink-500 text-white p-6 flex flex-col justify-center items-center vintage-border">
+                            <h3 class="text-2xl font-bold mb-4">Charleston 進階</h3>
+                            <p class="text-center">提升你的舞蹈技巧與表現力</p>
+                            <p class="mt-4 text-sm">翻轉卡片查看詳情</p>
+                        </div>
+                        <div class="flip-card-back bg-white p-6 flex flex-col justify-center items-center vintage-border">
+                            <h3 class="text-xl font-bold mb-3 text-pink-500">課程內容</h3>
+                            <ul class="text-sm text-left space-y-2">
+                                <li>• 複雜步伐與變化</li>
+                                <li>• 即興與個人風格發展</li>
+                                <li>• 舞台表演技巧</li>
+                            </ul>
+                            <p class="mt-4 font-bold">每週四 19:30-21:00</p>
+                            <p class="text-pink-500 font-bold mt-2">$2,400 / 8堂課</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Flip Card 3 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-green-500 text-white p-6 flex flex-col justify-center items-center vintage-border">
+                            <h3 class="text-2xl font-bold mb-4">Solo Jazz 專班</h3>
+                            <p class="text-center">展現個人魅力的獨舞課程</p>
+                            <p class="mt-4 text-sm">翻轉卡片查看詳情</p>
+                        </div>
+                        <div class="flip-card-back bg-white p-6 flex flex-col justify-center items-center vintage-border">
+                            <h3 class="text-xl font-bold mb-3 text-green-500">課程內容</h3>
+                            <ul class="text-sm text-left space-y-2">
+                                <li>• 經典爵士舞步與動作</li>
+                                <li>• 肢體表達與音樂詮釋</li>
+                                <li>• 個人風格建立</li>
+                            </ul>
+                            <p class="mt-4 font-bold">每週六 14:00-15:30</p>
+                            <p class="text-green-500 font-bold mt-2">$2,200 / 8堂課</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workshops Section -->
+    <section id="workshops" class="py-16 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">近期工作坊</h2>
+                <p class="text-lg max-w-2xl mx-auto">由國內外專業舞者帶來的精彩工作坊，深入學習特定主題與技巧。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Workshop 1 - Flip Card -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-purple-500 text-white p-6 flex flex-col justify-center items-center vintage-border">
+                            <h3 class="text-2xl font-bold mb-4">Balboa 工作坊</h3>
+                            <p class="text-center">7月11-13日</p>
+                            <p class="mt-4 text-sm">翻轉卡片查看詳情</p>
+                        </div>
+                        <div class="flip-card-back bg-white p-6 flex flex-col justify-center items-center vintage-border" style="background-image: url('./Jacob.jpg'); background-size: cover; background-position: center;">
+                            <h3 class="text-xl font-bold mb-3 text-purple-500">Balboa 工作坊</h3>
+                            <p class="text-sm text-center mb-4">今年夏天，JF大手筆邀請來自美國洛杉磯Jacob &amp;紐約Teni。Balboa 的狂熱份子，和我們一起來探索波波的樂趣吧！</p>
+                            <p class="mt-2 font-bold">7月11-13日</p>
+                            <button class="btn-swing bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded mt-4">立即報名</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Workshop 2 - Flip Card -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-orange-500 text-white p-6 flex flex-col justify-center items-center vintage-border">
+                            <h3 class="text-2xl font-bold mb-4">夏季工作坊</h3>
+                            <p class="text-center">7月25-27日</p>
+                            <p class="mt-4 text-sm">翻轉卡片查看詳情</p>
+                        </div>
+                        <div class="flip-card-back bg-white p-6 flex flex-col justify-center items-center vintage-border">
+                            <h3 class="text-xl font-bold mb-3 text-orange-500">夏季工作坊</h3>
+                            <p class="text-sm text-center mb-4">炎炎夏日，讓我們一起在舞蹈中找到清涼！特別邀請國際舞者帶來精彩的夏季工作坊。</p>
+                            <p class="mt-2 font-bold">7月25-27日</p>
+                            <button class="btn-swing bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded mt-4">立即報名</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Workshop 3 - Flip Card -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-teal-500 text-white p-6 flex flex-col justify-center items-center vintage-border">
+                            <h3 class="text-2xl font-bold mb-4">Mini Sol</h3>
+                            <p class="text-center">9月26-28日</p>
+                            <p class="mt-4 text-sm">翻轉卡片查看詳情</p>
+                        </div>
+                        <div class="flip-card-back bg-white p-6 flex flex-col justify-center items-center vintage-border">
+                            <h3 class="text-xl font-bold mb-3 text-teal-500">Mini Sol</h3>
+                            <p class="text-sm text-center mb-4">迷你版的Solo Jazz盛會！深入學習獨舞技巧，展現你的個人風格與創意。</p>
+                            <p class="mt-2 font-bold">9月26-28日</p>
+                            <button class="btn-swing bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded mt-4">立即報名</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2025 Events Calendar -->
+            <div class="mt-16">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-4">2025年活動行事曆</h3>
+                    <p class="text-lg max-w-2xl mx-auto">查看我們2025年的所有活動安排，提前規劃你的舞蹈行程。</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg vintage-border">
+                    <div class="flex justify-between items-center mb-6">
+                        <button id="prevMonth" class="btn-swing bg-gray-200 hover:bg-gray-300 py-2 px-4 rounded-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        <h3 id="currentMonth" class="text-xl font-bold">2025年 6月</h3>
+                        <button id="nextMonth" class="btn-swing bg-gray-200 hover:bg-gray-300 py-2 px-4 rounded-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <table class="calendar w-full">
+                        <thead>
+                            <tr>
+                                <th>日</th>
+                                <th>一</th>
+                                <th>二</th>
+                                <th>三</th>
+                                <th>四</th>
+                                <th>五</th>
+                                <th>六</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendarBody"><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td class="event event-important" style="position: relative; cursor: pointer;">7<div class="event-tooltip">
+                                    <strong>Solo Jazz 工作坊</strong>
+                                    <div class="mt-1">
+                                        <span class="inline-block w-2 h-2 rounded-full bg-pink-500 mr-1"></span>
+                                        特別工作坊
+                                    </div>
+                                </div></td></tr><tr><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td></tr><tr><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td class="event" style="position: relative; cursor: pointer;">21<div class="event-tooltip">
+                                    <strong>夏至舞會</strong>
+                                    <div class="mt-1">
+                                        <span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1"></span>
+                                        社交舞會
+                                    </div>
+                                </div></td></tr><tr><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td></tr><tr><td>29</td><td>30</td><td class="other-month">1</td><td class="other-month">2</td><td class="other-month">3</td><td class="other-month">4</td><td class="other-month">5</td></tr></tbody>
+                    </table>
+                    
+                    <div class="mt-6 p-4 bg-gray-50 rounded-md">
+                        <h4 class="font-bold mb-2">活動圖例</h4>
+                        <div class="flex flex-wrap gap-4">
+                            <div class="flex items-center">
+                                <span class="inline-block w-3 h-3 rounded-full bg-yellow-400 mr-2"></span>
+                                <span>常規活動</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="inline-block w-3 h-3 rounded-full bg-pink-500 mr-2"></span>
+                                <span>特別工作坊</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="inline-block w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
+                                <span>社交舞會</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="inline-block w-3 h-3 rounded-full bg-green-500 mr-2"></span>
+                                <span>表演活動</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 px-6 bg-gray-50">
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">聯絡我們</h2>
+                <p class="text-lg max-w-2xl mx-auto">有任何問題或想了解更多資訊，請隨時與我們聯繫。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="bg-white p-8 rounded-lg vintage-border">
+                    <h3 class="text-2xl font-bold mb-6">聯絡表單</h3>
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2" for="name">姓名</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2" for="email">電子郵件</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2" for="subject">主旨</label>
+                            <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2" for="message">訊息</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
+                        </div>
+                        <button type="button" class="btn-swing bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-md vintage-border">送出訊息</button>
+                    </form>
+                </div>
+                
+                <div class="bg-white p-8 rounded-lg vintage-border">
+                    <h3 class="text-2xl font-bold mb-6">聯絡資訊</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-yellow-100 p-3 rounded-full mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">電子郵件</h4>
+                                <p>info@jfswing.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="font-bold mb-3">社群媒體</h4>
+                            <div class="flex space-x-4">
+                                <a href="https://www.facebook.com/jfswing.tw?locale=zh_TW" target="_blank" class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
+                                    </svg>
+                                </a>
+                                <a href="https://www.instagram.com/swing_jf/" target="_blank" class="bg-pink-600 text-white p-3 rounded-full hover:bg-pink-700 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 p-6 bg-yellow-50 rounded-lg">
+                            <h4 class="font-bold mb-3">關注我們</h4>
+                            <p class="mb-4">在社群媒體上關注我們，獲取最新的課程資訊、活動通知與舞蹈小知識！</p>
+                            <div class="flex space-x-4">
+                                <a href="https://www.facebook.com/jfswing.tw?locale=zh_TW" target="_blank" class="btn-swing bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md">Facebook</a>
+                                <a href="https://www.instagram.com/swing_jf/" target="_blank" class="btn-swing bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded-md">Instagram</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Developer Button -->
+            <div class="mt-12 text-center">
+                <button id="devButton" class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-6 rounded-md vintage-border">
+                    開發者模式
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Modal -->
+    <div id="codeModal" class="modal">
+        <div id="codeContent">
+            <span class="close-btn">×</span>
+            <h2 class="text-2xl font-bold mb-4">網頁原始碼</h2>
+            <pre id="sourceCode"></pre>
+        </div>
+    </div>
+
+    <!-- Newsletter -->
+    <section class="py-12 px-6 bg-yellow-500 text-white">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-2xl font-bold">訂閱我們的電子報</h3>
+                    <p>獲取最新的課程資訊、活動通知與舞蹈小知識！</p>
+                </div>
+                <div class="w-full md:w-1/2 flex">
+                    <input type="email" placeholder="您的電子郵件" class="flex-grow px-4 py-3 rounded-l-md focus:outline-none">
+                    <button class="bg-black text-white px-6 py-3 rounded-r-md hover:bg-gray-800 transition-colors">訂閱</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-6">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4">JFSwing</h4>
+                    <p class="text-gray-400">讓搖擺舞成為你生活的一部分，體驗音樂與舞蹈帶來的無限樂趣。</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">快速連結</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">首頁</a></li>
+                        <li><a href="#classes" class="text-gray-400 hover:text-white transition-colors">常態課程</a></li>
+                        <li><a href="#workshops" class="text-gray-400 hover:text-white transition-colors">工作坊</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">聯絡我們</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">聯絡我們</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Email: info@jfswing.com</li>
+                        <li class="flex items-center space-x-2">
+                            <a href="https://www.facebook.com/jfswing.tw?locale=zh_TW" target="_blank" class="hover:text-white transition-colors">Facebook</a>
+                            <span>|</span>
+                            <a href="https://www.instagram.com/swing_jf/" target="_blank" class="hover:text-white transition-colors">Instagram</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+                <p>© 2023 JFSwing. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Sample form submission
+        const contactForm = document.querySelector('#contact form');
+        const submitButton = contactForm.querySelector('button');
+        
+        submitButton.addEventListener('click', function() {
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const subjectInput = document.getElementById('subject');
+            const messageInput = document.getElementById('message');
+            
+            if (nameInput.value && emailInput.value && messageInput.value) {
+                alert('感謝您的訊息！我們會盡快回覆您。');
+                nameInput.value = '';
+                emailInput.value = '';
+                subjectInput.value = '';
+                messageInput.value = '';
+            } else {
+                alert('請填寫所有必填欄位。');
+            }
+        });
+        
+        // Developer Mode - Show Source Code
+        const modal = document.getElementById("codeModal");
+        const btn = document.getElementById("devButton");
+        const closeBtn = document.getElementsByClassName("close-btn")[0];
+        const sourceCodeElement = document.getElementById("sourceCode");
+        
+        btn.onclick = function() {
+            // Get the current HTML content
+            const htmlContent = document.documentElement.outerHTML;
+            
+            // Escape HTML entities for display
+            const escapedHtml = htmlContent
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+            
+            // Set the content and show the modal
+            sourceCodeElement.textContent = htmlContent;
+            modal.style.display = "block";
+        }
+        
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        
+        // Calendar functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Calendar data - 2025 events
+            const events = {
+                '2025-01-15': { title: 'Lindy Hop 新年派對', type: 'social', color: 'blue' },
+                '2025-01-28': { title: '農曆新年特別課程', type: 'regular', color: 'yellow' },
+                '2025-02-14': { title: '情人節舞會', type: 'social', color: 'blue' },
+                '2025-02-22': { title: '國際講師工作坊', type: 'workshop', color: 'pink' },
+                '2025-03-08': { title: '女性舞者日', type: 'workshop', color: 'pink' },
+                '2025-03-20': { title: '春季表演', type: 'performance', color: 'green' },
+                '2025-04-05': { title: 'Balboa 密集班', type: 'workshop', color: 'pink' },
+                '2025-04-18': { title: '復活節舞會', type: 'social', color: 'blue' },
+                '2025-05-10': { title: '母親節特別活動', type: 'regular', color: 'yellow' },
+                '2025-05-25': { title: '春季成果發表', type: 'performance', color: 'green' },
+                '2025-06-07': { title: 'Solo Jazz 工作坊', type: 'workshop', color: 'pink' },
+                '2025-06-21': { title: '夏至舞會', type: 'social', color: 'blue' },
+                '2025-07-11': { title: 'Balboa 工作坊', type: 'workshop', color: 'pink' },
+                '2025-07-25': { title: '夏季工作坊', type: 'workshop', color: 'pink' },
+                '2025-08-08': { title: '父親節特別活動', type: 'regular', color: 'yellow' },
+                '2025-08-15': { title: '夏季舞會', type: 'social', color: 'blue' },
+                '2025-09-10': { title: '秋季課程開始', type: 'regular', color: 'yellow' },
+                '2025-09-26': { title: 'Mini Sol 工作坊', type: 'workshop', color: 'pink' },
+                '2025-10-10': { title: '國慶日表演', type: 'performance', color: 'green' },
+                '2025-10-31': { title: '萬聖節主題舞會', type: 'social', color: 'blue' },
+                '2025-11-15': { title: '國際講師工作坊', type: 'workshop', color: 'pink' },
+                '2025-11-28': { title: '感恩節舞會', type: 'social', color: 'blue' },
+                '2025-12-20': { title: '冬季成果發表', type: 'performance', color: 'green' },
+                '2025-12-31': { title: '跨年舞會', type: 'social', color: 'blue' }
+            };
+            
+            // Current date for calendar
+            let currentDate = new Date(2025, 0, 1); // Start with January 2025
+            
+            // Function to generate calendar
+            function generateCalendar(year, month) {
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const daysInMonth = lastDay.getDate();
+                const startingDayOfWeek = firstDay.getDay();
+                
+                // Update header
+                const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+                document.getElementById('currentMonth').textContent = `2025年 ${monthNames[month]}`;
+                
+                // Clear previous calendar
+                const calendarBody = document.getElementById('calendarBody');
+                calendarBody.innerHTML = '';
+                
+                // Create calendar rows
+                let date = 1;
+                for (let i = 0; i < 6; i++) {
+                    // Create a week row
+                    const row = document.createElement('tr');
+                    
+                    // Create 7 cells for each day of the week
+                    for (let j = 0; j < 7; j++) {
+                        const cell = document.createElement('td');
+                        
+                        if (i === 0 && j < startingDayOfWeek) {
+                            // Empty cells before the first day of the month
+                            const prevMonthLastDay = new Date(year, month, 0).getDate();
+                            const prevDate = prevMonthLastDay - (startingDayOfWeek - j - 1);
+                            cell.textContent = prevDate;
+                            cell.classList.add('other-month');
+                        } else if (date > daysInMonth) {
+                            // Empty cells after the last day of the month
+                            const nextDate = date - daysInMonth;
+                            cell.textContent = nextDate;
+                            cell.classList.add('other-month');
+                            date++;
+                        } else {
+                            // Regular day cells
+                            cell.textContent = date;
+                            
+                            // Check if this date has an event
+                            const dateStr = `2025-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+                            if (events[dateStr]) {
+                                cell.classList.add('event');
+                                if (events[dateStr].color === 'pink') {
+                                    cell.classList.add('event-important');
+                                }
+                                
+                                // Create tooltip
+                                const tooltip = document.createElement('div');
+                                tooltip.classList.add('event-tooltip');
+                                tooltip.innerHTML = `
+                                    <strong>${events[dateStr].title}</strong>
+                                    <div class="mt-1">
+                                        <span class="inline-block w-2 h-2 rounded-full bg-${events[dateStr].color}-500 mr-1"></span>
+                                        ${events[dateStr].type === 'workshop' ? '特別工作坊' : 
+                                          events[dateStr].type === 'social' ? '社交舞會' : 
+                                          events[dateStr].type === 'performance' ? '表演活動' : '常規活動'}
+                                    </div>
+                                `;
+                                cell.appendChild(tooltip);
+                                cell.style.position = 'relative';
+                                cell.style.cursor = 'pointer';
+                            }
+                            
+                            date++;
+                        }
+                        
+                        row.appendChild(cell);
+                    }
+                    
+                    calendarBody.appendChild(row);
+                    
+                    // Stop if we've displayed all days
+                    if (date > daysInMonth) {
+                        break;
+                    }
+                }
+            }
+            
+            // Initial calendar generation
+            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+            
+            // Previous month button
+            document.getElementById('prevMonth').addEventListener('click', function() {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+            });
+            
+            // Next month button
+            document.getElementById('nextMonth').addEventListener('click', function() {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93f9b079f31e827f',t:'MTc0NzIxODMwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
+</body></html>
