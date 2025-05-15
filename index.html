@@ -30,6 +30,30 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- 翻轉卡片的觸摸事件處理 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 獲取所有翻轉卡片元素
+            const flipCards = document.querySelectorAll('.flip-card');
+            
+            // 為每個卡片添加點擊/觸摸事件
+            flipCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // 在移動設備上切換翻轉狀態
+                    if (window.matchMedia('(max-width: 768px)').matches) {
+                        this.classList.toggle('flipped');
+                    }
+                });
+                
+                // 添加觸摸事件
+                card.addEventListener('touchstart', function(e) {
+                    // 防止觸摸事件的默認行為
+                    e.preventDefault();
+                }, {passive: false});
+            });
+        });
+    </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=Poppins:wght@300;400;600&amp;display=swap" rel="stylesheet">
     
@@ -114,8 +138,15 @@
             transform-style: preserve-3d;
         }
         
-        .flip-card:hover .flip-card-inner {
+        .flip-card.flipped .flip-card-inner {
             transform: rotateY(180deg);
+        }
+        
+        /* 保留桌面端的hover效果 */
+        @media (hover: hover) {
+            .flip-card:hover .flip-card-inner {
+                transform: rotateY(180deg);
+            }
         }
         
         .flip-card-front, .flip-card-back {
