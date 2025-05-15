@@ -39,18 +39,32 @@
             
             // 為每個卡片添加點擊/觸摸事件
             flipCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    // 在移動設備上切換翻轉狀態
+                // 使用觸摸事件處理移動設備
+                card.addEventListener('touchend', function(e) {
+                    // 只在移動設備上執行
                     if (window.matchMedia('(max-width: 768px)').matches) {
+                        // 阻止默認行為，但不阻止冒泡
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                }, {passive: false});
+                
+                // 保留點擊事件作為備用
+                card.addEventListener('click', function(e) {
+                    // 只在移動設備上執行，並且只處理非觸摸引起的點擊
+                    if (window.matchMedia('(max-width: 768px)').matches && !window.touchTriggered) {
                         this.classList.toggle('flipped');
                     }
                 });
-                
-                // 添加觸摸事件
-                card.addEventListener('touchstart', function(e) {
-                    // 防止觸摸事件的默認行為
-                    e.preventDefault();
-                }, {passive: false});
+            });
+            
+            // 設置全局標記，用於區分觸摸和鼠標事件
+            window.addEventListener('touchstart', function() {
+                window.touchTriggered = true;
+            });
+            
+            window.addEventListener('mousedown', function() {
+                window.touchTriggered = false;
             });
         });
     </script>
