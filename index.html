@@ -67,6 +67,31 @@
             window.addEventListener('mousedown', function() {
                 window.touchTriggered = false;
             });
+            
+            // 手機版菜單控制
+            const mobileMenuButton = document.querySelector('.mobile-menu-button');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu && mobileMenuClose) {
+                // 打開菜單
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.add('active');
+                });
+                
+                // 關閉菜單
+                mobileMenuClose.addEventListener('click', function() {
+                    mobileMenu.classList.remove('active');
+                });
+                
+                // 點擊菜單項後自動關閉菜單
+                const menuLinks = mobileMenu.querySelectorAll('a');
+                menuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.remove('active');
+                    });
+                });
+            }
         });
     </script>
 
@@ -173,6 +198,90 @@
             font-family: 'Playfair Display', serif;
         }
         
+        /* 響應式導航菜單樣式 */
+        .mobile-menu-button {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: #FFD166;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 70%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            z-index: 999;
+            padding: 70px 20px 20px;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        .mobile-menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .mobile-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .mobile-menu li {
+            margin-bottom: 15px;
+        }
+        
+        .mobile-menu a {
+            display: block;
+            padding: 10px;
+            color: #333;
+            text-decoration: none;
+            font-size: 18px;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu a:hover {
+            background-color: #FFD166;
+            padding-left: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-button {
+                display: block;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .desktop-menu {
+                display: none;
+            }
+        }
+        
         .vintage-border {
             border: 2px solid #333;
             box-shadow: 5px 5px 0px #333;
@@ -234,6 +343,18 @@
                 width: 80% !important;
                 text-align: center !important;
                 font-size: 1.2rem !important;
+            }
+            #mobile-menu {
+                display: none;
+            }
+            #mobile-menu:not(.hidden) {
+                display: block;
+            }
+            .md\:flex {
+                display: none;
+            }
+            .md\:hidden {
+                display: block;
             }
         }
         
@@ -387,6 +508,21 @@
                 <a href="#home" class="hover:text-yellow-600 transition-colors" title="前往首頁">首頁</a>
                 <a href="#classes" class="hover:text-yellow-600 transition-colors" title="查看常態課程">常態課程</a>
                 <a href="#workshops" class="hover:text-yellow-600 transition-colors" title="查看工作坊">工作坊</a>
+                <a href="lindyhop.html" class="hover:text-yellow-600 transition-colors" title="舞蹈脈絡">舞蹈脈絡</a>
+            </div>
+            <button class="mobile-menu-button md:hidden" aria-label="開啟選單" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <div class="mobile-menu">
+                <button class="mobile-menu-close" aria-label="關閉選單">×</button>
+                <ul>
+                    <li><a href="#home" title="前往首頁">首頁</a></li>
+                    <li><a href="#classes" title="查看常態課程">常態課程</a></li>
+                    <li><a href="#workshops" title="查看工作坊">工作坊</a></li>
+                    <li><a href="lindyhop.html" title="舞蹈脈絡">舞蹈脈絡</a></li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -406,11 +542,12 @@
         </div>
     </div>
             </div>
-            <!-- <button class="md:hidden" aria-label="開啟選單" aria-expanded="false">
+            <button id="mobile-menu-toggle" class="md:hidden text-black focus:outline-none absolute right-6 top-4" aria-label="開啟選單" aria-expanded="false">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" id="menu-open"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" id="menu-close" style="display: none;"></path>
                 </svg>
-            </button> -->
+            </button>
         </div>
     </nav>
 
@@ -862,6 +999,34 @@ contactForm.addEventListener('submit', async function(e) {
             }
         }
         
+         // Mobile menu toggle
+         document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+             const mobileMenu = document.getElementById('mobile-menu');
+             const menuOpen = document.getElementById('menu-open');
+             const menuClose = document.getElementById('menu-close');
+             const isExpanded = this.getAttribute('aria-expanded') === 'true';
+             
+             this.setAttribute('aria-expanded', !isExpanded);
+             mobileMenu.classList.toggle('hidden');
+             menuOpen.style.display = isExpanded ? 'block' : 'none';
+             menuClose.style.display = isExpanded ? 'none' : 'block';
+         });
+         
+         // Close mobile menu when a link is clicked
+         document.querySelectorAll('#mobile-menu a').forEach(link => {
+             link.addEventListener('click', function() {
+                 const mobileMenu = document.getElementById('mobile-menu');
+                 const menuOpen = document.getElementById('menu-open');
+                 const menuClose = document.getElementById('menu-close');
+                 const toggleButton = document.getElementById('mobile-menu-toggle');
+                 
+                 mobileMenu.classList.add('hidden');
+                 menuOpen.style.display = 'block';
+                 menuClose.style.display = 'none';
+                 toggleButton.setAttribute('aria-expanded', 'false');
+             });
+         });
+         
         // 行事曆已替換為靜態圖片
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93f9b079f31e827f',t:'MTc0NzIxODMwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>

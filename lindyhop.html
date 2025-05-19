@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lindy Hop 舞蹈脈絡 - JFSwing</title>
+    <link rel="icon" href="JF.jpg" type="image/jpeg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: #333;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .vintage-border {
+            border: 2px solid #333;
+            box-shadow: 5px 5px 0px #333;
+        }
+        
+        .timeline-container {
+            position: relative;
+        }
+        
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: #FFD166;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-container::before {
+                left: 31px;
+            }
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: #fff;
+            border: 4px solid #FFD166;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-left {
+            left: 0;
+        }
+        
+        .timeline-right {
+            left: 50%;
+        }
+        
+        .timeline-left::after {
+            right: -10px;
+        }
+        
+        .timeline-right::after {
+            left: -10px;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-left::after, .timeline-right::after {
+                left: 21px;
+            }
+            
+            .timeline-right {
+                left: 0;
+            }
+        }
+        
+        .dancing-element {
+            animation: dance 3s infinite alternate ease-in-out;
+        }
+        
+        @keyframes dance {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-10px) rotate(5deg); }
+        }
+        
+        .btn-swing {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-swing:hover {
+            transform: rotate(-2deg) scale(1.05);
+        }
+        
+        .record-spin {
+            animation: spin 8s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .vintage-pattern {
+            background-image: radial-gradient(#f0f0f0 10%, transparent 11%),
+                            radial-gradient(#f0f0f0 10%, transparent 11%);
+            background-size: 10px 10px;
+            background-position: 0 0, 30px 30px;
+            background-repeat: repeat;
+        }
+        
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-gap: 20px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+        
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            z-index: 100;
+            padding: 2rem;
+        }
+        
+        .mobile-menu.active {
+            display: block;
+        }
+        
+        /* Accordion styles */
+        .accordion-header {
+            cursor: pointer;
+            padding: 1rem;
+            background-color: #f8f8f8;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .accordion-header:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .accordion-content.active {
+            max-height: 1000px;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 手機版菜單控制
+            const mobileMenuButton = document.querySelector('.mobile-menu-button');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu && mobileMenuClose) {
+                // 打開菜單
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.add('active');
+                });
+                
+                // 關閉菜單
+                mobileMenuClose.addEventListener('click', function() {
+                    mobileMenu.classList.remove('active');
+                });
+                
+                // 點擊菜單項後自動關閉菜單
+                const menuLinks = mobileMenu.querySelectorAll('a');
+                menuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.remove('active');
+                    });
+                });
+            }
+            
+            // 手風琴效果控制
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    content.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white py-4 px-6 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="record-spin mr-3">
+                    <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" fill="#333" />
+                        <circle cx="50" cy="50" r="20" fill="#f8f8f8" />
+                        <circle cx="50" cy="50" r="5" fill="#333" />
+                    </svg>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-bold">JFSwing</h1>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="hover:text-yellow-600 transition-colors">首頁</a>
+                <a href="index.html#classes" class="hover:text-yellow-600 transition-colors">常態課程</a>
+                <a href="index.html#workshops" class="hover:text-yellow-600 transition-colors">工作坊</a>
+                <a href="index.html#contact" class="hover:text-yellow-600 transition-colors">聯絡我們</a>
+            </div>
+            <button class="mobile-menu-button md:hidden" aria-label="開啟選單" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close" aria-label="關閉選單">×</button>
+        <ul>
+            <li><a href="index.html">首頁</a></li>
+            <li><a href="index.html#classes">常態課程</a></li>
+            <li><a href="index.html#workshops">工作坊</a></li>
+            <li><a href="index.html#contact">聯絡我們</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="py-16 md:py-24 px-6 bg-yellow-50 relative overflow-hidden">
+        <div class="container mx-auto flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h2 class="text-4xl md:text-6xl font-bold mb-6">Lindy Hop<br><span class="text-yellow-600">舞蹈脈絡</span></h2>
+                <p class="text-lg mb-8">從哈林文藝復興到現代復興，探索這個充滿活力與歷史意義的舞蹈形式如何演變並影響全球文化。</p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#history" class="btn-swing bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-md vintage-border">探索歷史</a>
+                    <a href="#styles" class="btn-swing bg-white hover:bg-gray-100 text-yellow-600 font-bold py-3 px-6 rounded-md vintage-border">舞蹈風格</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 relative">
+                <div class="relative w-full h-80 md:h-96">
+                    <svg class="w-full h-full" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="200" cy="200" r="180" fill="#FFD166" opacity="0.8" />
+                        <g class="dancing-element">
+                            <!-- Stylized dancing couple silhouette - more dynamic for Lindy Hop -->
+                            <path d="M150,120 C190,90 220,100 250,120 C280,140 290,170 275,200 C260,230 230,250 200,250 C170,250 140,230 125,200 C110,170 120,140 150,120 Z" fill="#333" />
+                            <path d="M180,140 C195,130 215,130 230,140 C245,150 250,165 245,185 C240,205 225,220 205,220 C185,220 170,205 165,185 C160,165 165,150 180,140 Z" fill="#fff" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <!-- Decorative elements -->
+        <div class="absolute top-20 left-10 dancing-element" style="animation-delay: 0.5s;">
+            <svg width="30" height="30" viewBox="0 0 100 100" fill="none">
+                <polygon points="50,0 61,35 100,35 69,57 82,91 50,70 18,91 31,57 0,35 39,35" fill="#EF476F" />
+            </svg>
+        </div>
+        <div class="absolute bottom-20 right-10 dancing-element" style="animation-delay: 1s;">
+            <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
+                <polygon points="50,0 61,35 100,35 69,57 82,91 50,70 18,91 31,57 0,35 39,35" fill="#06D6A0" />
+            </svg>
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="py-16 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">什麼是 Lindy Hop？</h2>
+                <p class="text-lg max-w-3xl mx-auto">Lindy Hop 是一種充滿活力的搖擺舞蹈，起源於1920年代末的紐約哈林區，是爵士樂時代的代表性舞蹈。它融合了查爾斯頓、踢踏舞和非洲舞蹈元素，以其即興性、活力和社交性而聞名。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="bg-gray-50 p-8 rounded-lg vintage-border">
+                    <h3 class="text-2xl font-bold mb-4">Lindy Hop 的特點</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>強調即興與個人表達</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>充滿活力的舞步與動作</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>舞伴間的互動與連接</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>與爵士樂的緊密結合</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>社交性與包容性</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="relative h-80 md:h-96 overflow-hidden rounded-lg vintage-border">
+                    <svg class="w-full h-full" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Vintage record player illustration -->
+                        <rect x="50" y="150" width="300" height="150" rx="10" fill="#8B4513" />
+                        <rect x="60" y="160" width="280" height="130" rx="5" fill="#A0522D" />
+                        <circle cx="200" cy="200" r="80" fill="#333" />
+                        <circle cx="200" cy="200" r="75" fill="#111" />
+                        <circle cx="200" cy="200" r="25" fill="#FFD700" />
+                        <circle cx="200" cy="200" r="5" fill="#333" />
+                        <rect x="280" y="180" width="100" height="10" rx="5" fill="#8B4513" transform="rotate(30 280 180)" />
+                        <circle cx="280" cy="180" r="8" fill="#A0522D" />
+                        <circle cx="370" cy="210" r="15" fill="#A0522D" />
+                        
+                        <!-- Music notes -->
+                        <g class="dancing-element" style="animation-delay: 0.2s;">
+                            <path d="M100,100 Q110,80 120,100 Q130,120 140,100" stroke="#FFD700" stroke-width="2" fill="none" />
+                            <circle cx="140" cy="100" r="8" fill="#FFD700" />
+                        </g>
+                        <g class="dancing-element" style="animation-delay: 0.5s;">
+                            <path d="M250,80 Q260,60 270,80 Q280,100 290,80" stroke="#FFD700" stroke-width="2" fill="none" />
+                            <circle cx="290" cy="80" r="8" fill="#FFD700" />
+                        </g>
+                        <g class="dancing-element" style="animation-delay: 0.8s;">
+                            <path d="M180,60 Q190,40 200,60 Q210,80 220,60" stroke="#FFD700" stroke-width="2" fill="none" />
+                            <circle cx="220" cy="60" r="8" fill="#FFD700" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Timeline Section -->
+    <section id="history" class="py-16 px-6 bg-gray-50">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Lindy Hop 的歷史脈絡</h2>
+                <p class="text-lg max-w-3xl mx-auto">從1920年代的哈林區到現代的全球復興，Lindy Hop 的發展歷程充滿了豐富的文化意義與社會變遷。</p>
+            </div>
+            
+            <div class="timeline-container py-8">
+                <!-- Timeline Item 1 -->
+                <div class="timeline-item timeline-left mb-8">
+                    <div class="bg-white p-6 rounded-lg vintage-border">
+                        <h3 class="text-xl font-bold mb-2">1920年代末 - 誕生</h3>
+                        <p>Lindy Hop 誕生於紐約哈林區的 Savoy Ballroom，據說舞名來自於查爾斯·林德伯格（Charles Lindbergh）1927年橫跨大西洋的飛行壯舉（"Lindy's Hop"）。</p>
+                    </div>
+                </div>
+                
+                <!-- Timeline Item 2 -->
+                <div class="timeline-item timeline-right mb-8">
+                    <div class="bg-white p-6 rounded-lg vintage-border">
+                        <h3 class="text-xl font-bold mb-2">1930年代 - 黃金時代</h3>
+                        <p>這個時期是 Lindy Hop 的黃金時代，Whitey's Lindy Hoppers 等舞團在 Savoy Ballroom 嶄露頭角。舞蹈大師 Frankie Manning 發明了第一個空中動作（aerial），為 Lindy Hop 增添了新的維度。</p>
+                    </div>
+                </div>
+                
+                <!-- Timeline Item 3 -->
+                <div class="timeline-item timeline-left mb-8">
+                    <div class="bg-white p-6 rounded-lg vintage-border">
+                        <h3 class="text-xl font-bold mb-2">1940年代 - 戰爭與變化</h3>
+                        <p>二戰期間，許多舞者被徵召入伍，舞蹈風格也隨之改變。這個時期出現了更簡化的搖擺舞形式，如 Jitterbug，適應戰時較小的舞廳空間。</p>
+                    </div>
+                </div>
+                
+                <!-- Timeline Item 4 -->
+                <div class="timeline-item timeline-right mb-8">
+                    <div class="bg-white p-6 rounded-lg vintage-border">
+                        <h3 class="text-xl font-bold mb-2">1950-1980年代 - 衰退期</h3>
+                        <p>隨著搖滾樂、迪斯可等新音樂形式的興起，Lindy Hop 逐漸淡出主流舞台。這段時期，原始的 Lindy Hop 幾乎被遺忘，只在少數社區中保存。</p>
+                    </div>
+                </div>
+                
+                <!-- Timeline Item 5 -->
+                <div class="timeline-item timeline-left mb-8">
+                    <div class="bg-white p-6 rounded-lg vintage-border">
+                        <h3 class="text-xl font-bold mb-2">1980年代 - 復興開始</h3>
+                        <p>一群瑞典舞者開始尋找原始 Lindy Hop 的根源，找到了 Frankie Manning 等老一輩舞者。這標誌著 Lindy Hop 復興運動的開始，Frankie Manning 重返舞台，開始全球教學。</p>
+                    </div>
+                </div>
+                
+                <!-- Timeline Item 6 -->
+                <div class="timeline-item timeline-right">
+                    <div class="bg-white p-6 rounded-lg vintage-border">
+                        <h3 class="text-xl font-bold mb-2">1990年代至今 - 全球復興</h3>
+                        <p>Lindy Hop 在全球範圍內復興，形成了國際社群。各地舉辦工作坊、舞營和比賽，新一代舞者不斷創新，同時尊重這門舞蹈的歷史根源與文化意義。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Figures Section -->
+    <section class="py-16 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Lindy Hop 重要人物</h2>
+                <p class="text-lg max-w-3xl mx-auto">這些舞者和創新者塑造了 Lindy Hop 的發展，並為這門藝術形式留下了不可磨滅的印記。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Figure 1 -->
+                <div class="bg-white p-6 rounded-lg vintage-border">
+                    <div class="h-48 bg-gray-200 rounded-md mb-4 overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Stylized portrait of Frankie Manning -->
+                            <rect width="300" height="200" fill="#f0f0f0" />
+                            <circle cx="150" cy="80" r="60" fill="#333" />
+                            <rect x="90" y="140" width="120" height="150" fill="#333" />
+                            <path d="M110,80 Q150,120 190,80" stroke="#fff" stroke-width="3" fill="none" />
+                            <circle cx="130" cy="65" r="8" fill="#fff" />
+                            <circle cx="170" cy="65" r="8" fill="#fff" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Frankie Manning</h3>
+                    <p class="mb-4">被譽為「Lindy Hop 大使」，他發明了第一個空中動作，並在舞蹈復興中扮演了關鍵角色，將原始 Lindy Hop 傳授給新一代舞者。</p>
+                    <div class="flex justify-end">
+                        <button class="text-yellow-600 hover:text-yellow-800 font-bold" onclick="toggleAccordion('frankie-content')">了解更多 ↓</button>
+                    </div>
+                    <div id="frankie-content" class="accordion-content mt-4">
+                        <p>Frankie Manning (1914-2009) 在 Savoy Ballroom 開始他的舞蹈生涯，後來成為 Whitey's Lindy Hoppers 的核心成員。他在多部電影中表演，包括《Hellzapoppin'》(1941)。在舞蹈復興期間，Manning 95歲高齡仍在世界各地教授 Lindy Hop，他的教學風格強調舞蹈的喜悅和社交性質。</p>
+                    </div>
+                </div>
+                
+                <!-- Figure 2 -->
+                <div class="bg-white p-6 rounded-lg vintage-border">
+                    <div class="h-48 bg-gray-200 rounded-md mb-4 overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Stylized portrait of Norma Miller -->
+                            <rect width="300" height="200" fill="#f0f0f0" />
+                            <circle cx="150" cy="80" r="60" fill="#333" />
+                            <rect x="90" y="140" width="120" height="150" fill="#333" />
+                            <path d="M110,90 Q150,110 190,90" stroke="#fff" stroke-width="3" fill="none" />
+                            <circle cx="130" cy="65" r="8" fill="#fff" />
+                            <circle cx="170" cy="65" r="8" fill="#fff" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Norma Miller</h3>
+                    <p class="mb-4">被稱為「搖擺舞女王」，她是 Whitey's Lindy Hoppers 最年輕的成員，後來成為舞蹈家、喜劇演員和作家，致力於保存 Lindy Hop 的歷史。</p>
+                    <div class="flex justify-end">
+                        <button class="text-yellow-600 hover:text-yellow-800 font-bold" onclick="toggleAccordion('norma-content')">了解更多 ↓</button>
+                    </div>
+                    <div id="norma-content" class="accordion-content mt-4">
+                        <p>Norma Miller (1919-2019) 14歲時就被招募加入 Whitey's Lindy Hoppers。她的職業生涯橫跨舞蹈、喜劇和電影製作。她的自傳《Swingin' at the Savoy》記錄了哈林文藝復興時期的舞蹈文化，以及非裔美國人在娛樂業的經歷。Miller 直到晚年仍活躍於 Lindy Hop 社群，分享她的知識和經驗。</p>
+                    </div>
+                </div>
+                
+                <!-- Figure 3 -->
+                <div class="bg-white p-6 rounded-lg vintage-border">
+                    <div class="h-48 bg-gray-200 rounded-md mb-4 overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Stylized portrait of Whitey's Lindy Hoppers -->
+                            <rect width="300" height="200" fill="#f0f0f0" />
+                            <circle cx="100" cy="80" r="40" fill="#333" />
+                            <rect x="60" y="120" width="80" height="100" fill="#333" />
+                            <circle cx="200" cy="80" r="40" fill="#333" />
+                            <rect x="160" y="120" width="80" height="100" fill="#333" />
+                            <path d="M80,80 Q100,95 120,80" stroke="#fff" stroke-width="2" fill="none" />
+                            <path d="M180,80 Q200,95 220,80" stroke="#fff" stroke-width="2" fill="none" />
+                            <circle cx="90" cy="70" r="5" fill="#fff" />
+                            <circle cx="110" cy="70" r="5" fill="#fff" />
+                            <circle cx="190" cy="70" r="5" fill="#fff" />
+                            <circle cx="210" cy="70" r="5" fill="#fff" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Whitey's Lindy Hoppers</h3>
+                    <p class="mb-4">由 Herbert "Whitey" White 組建的專業舞團，成員包括 Frankie Manning 和 Norma Miller，他們在電影和國際巡演中展示了 Lindy Hop。</p>
+                    <div class="flex justify-end">
+                        <button class="text-yellow-600 hover:text-yellow-800 font-bold" onclick="toggleAccordion('whitey-content')">了解更多 ↓</button>
+                    </div>
+                    <div id="whitey-content" class="accordion-content mt-4">
+                        <p>Whitey's Lindy Hoppers 成立於1930年代，是第一個專業的 Lindy Hop 舞團。他們在《A Day at the Races》(1937) 和《Hellzapoppin'》(1941) 等電影中的表演至今仍被視為 Lindy Hop 的經典。舞團成員都是從 Savoy Ballroom 選拔出來的頂尖舞者，他們的表演風格結合了高難度技巧和強烈的表現力，為 Lindy Hop 設立了高標準。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dance Styles Section -->
+    <section id="styles" class="py-16 px-6 bg-gray-50">
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Lindy Hop 舞蹈風格</h2>
+                <p class="text-lg max-w-3xl mx-auto">Lindy Hop 包含多種風格和變體，每種都有其獨特的特點和歷史背景。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Style 1 -->
+                <div class="bg-white p-6 rounded-lg vintage-border">
+                    <h3 class="text-xl font-bold mb-4">Savoy 風格</h3>
+                    <p class="mb-4">發源於紐約哈林區的 Savoy Ballroom，特點是流暢、開放的姿態和即興創作。這種風格強調舞者間的連接和音樂詮釋，動作通常更大、更有活力。</p>
+                    <div class="h-48 bg-yellow-100 rounded-md overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Stylized Savoy style dancers -->
+                            <rect width="300" height="200" fill="#FFD166" opacity="0.3" />
+                            <g transform="translate(50, 30)">
+                                <path d="M50,20 C70,0 130,0 150,20 C170,40 170,80 150,100 C130,120 70,120 50,100 C30,80 30,40 50,20 Z" fill="#333" />
+                                <path d="M80,40 C90,30 110,30 120,40 C130,50 130,70 120,80 C110,90 90,90 80,80 C70,70 70,50 80,40 Z" fill="#fff" />
+                            </g>
+                            <g transform="translate(150, 30)">
+                                <path d="M50,20 C70,0 130,0 150,20 C170,40 170,80 150,100 C130,120 70,120 50,100 C30,80 30,40 50,20 Z" fill="#333" transform="scale(-1, 1)" />
+                                <path d="M-80,40 C-90,30 -110,30 -120,40 C-130,50 -130,70 -120,80 C-110,90 -90,90 -80,80 C-70,70 -70,50 -80,40 Z" fill="#fff" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Style 2 -->
+                <div class="bg-white p-6 rounded-lg vintage-border">
+                    <h3 class="text-xl font-bold mb-4">Hollywood 風格</h3>
+                    <p class="mb-4">在好萊塢電影中流行的風格，更注重視覺效果和表演性。動作通常更加誇張和戲劇化，適合舞台表演和電影拍攝。</p>
+                    <div class="h-48 bg-pink-100 rounded-md overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Stylized Hollywood style dancers -->
+                            <rect width="300" height="200" fill="#EF476F" opacity="0.2" />
+                            <g transform="translate(50, 20)">
+                                <path d="M30,20 C50,0 110,0 130,20 C150,40 150,100 130,120 C110,140 50,140 30,120 C10,100 10,40 30,20 Z" fill="#333" />
+                                <path d="M60,50 C70,40 90,40 100,50 C110,60 110,80 100,90 C90,100 70,100 60,90 C50,80 50,60 60,50 Z" fill="#fff" />
+                            </g>
+                            <g transform="translate(170, 20)">
+                                <path d="M30,20 C50,0 110,0 130,20 C150,40 150,100 130,120 C110,140 50,140 30,120 C10,100 10,40 30,20 Z" fill="#333" transform="scale(-1, 1)" />
+                                <path d="M-60,50 C-70,40 -90,40 -100,50 C-110,60 -110,80 -100,90 C-90,100 -70,100 -60,90 C-50,80 -50,60 -60,50 Z" fill="#fff" />
+                            </g>
+                            <!-- Hollywood stars -->
+                            <polygon points="30,30 35,40 45,42 38,50 40,60 30,55 20,60 22,50 15,42 25,40" fill="#FFD700" />
+                            <polygon points="270,30 275,40 285,42 278,50 280,60 270,55 260,60 262,50 255,42 265,40" fill="#FFD700" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Style 3 -->
+                <div class="bg-white p-6 rounded-lg vintage-border">
+                    <h3 class="text-xl font-bold mb-4">Smooth 風格</h3>
+                    <p class="mb-4">強調流暢、優雅的動作和線條，步伐通常較小且精確。這種風格注重舞者間的連接和音樂詮釋，動作看起來更加輕鬆自然。</p>
+                    <div class="h-48 bg-blue-100 rounded-md overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Stylized Smooth style dancers -->
+                            <rect width="300" height="200" fill="#118AB2" opacity="0.2" />
+                            <g transform="translate(75, 25)">
+                                <path d="M25,20 C40,5 85,5 100,20 C115,35 115,85 100,100 C85,115 40,115 25,100 C10,85 10,35 25,20 Z" fill="#333" />
+                                <path d="M45,40 C55,35 70,35 80,40 C85,45 85,65 80,70 C70,75 55,75 45,70 C40,65 40,45 45,40 Z" fill="#fff" />
+                            </g>
+                            <g transform="translate(175, 25)">
+                                <path d="M25,20 C40,5 85,5 100,20 C115,35 115,85 100,100 C85,115 40,115 25,100 C10,85 10,35 25,20 Z" fill="#333" transform="scale(-1, 1)" />
+                                <path d="M-45,40 C-55,35 -70,35 -80,40 C-85,45 -85,65 -80,70 C-70,75 -55,75 -45,70 C-40,65 -40,45 -45,40 Z" fill="#fff" />
+                            </g>
+                            <!-- Smooth flowing lines -->
+                            <path d="M50,150 C100,130 200,130 250,150" stroke="#118AB2" stroke-width="3" fill="none" />
+                            <path d="M50,160 C100,140 200,140 250,160" stroke="#118AB2" stroke-width="2" fill="none" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Style 4 -->
+                <div class="bg-white p-6 rounded-lg vintage-border">
+                    <h3 class="text-xl font-bold mb-4">現代復興風格</h3>
+                    <p class="mb-4">1980年代復興後發展的風格，融合了傳統 Lindy Hop 與現代舞蹈元素。這種風格通常技術性更強，包含更多變化和創新，同時尊重舞蹈的歷史根源。</p>
+                    <div class="h-48 bg-green-100 rounded-md overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Stylized Modern Revival style dancers -->
+                            <rect width="300" height="200" fill="#06D6A0" opacity="0.2" />
+                            <g transform="translate(60, 25)">
+                                <path d="M35,20 C55,0 95,0 115,20 C135,40 135,90 115,110 C95,130 55,130 35,110 C15,90 15,40 35,20 Z" fill="#333" />
+                                <path d="M55,45 C65,35 85,35 95,45 C105,55 105,75 95,85 C85,95 65,95 55,85 C45,75 45,55 55,45 Z" fill="#fff" />
+                            </g>
+                            <g transform="translate(180, 25)">
+                                <path d="M35,20 C55,0 95,0 115,20 C135,40 135,90 115,110 C95,130 55,130 35,110 C15,90 15,40 35,20 Z" fill="#333" transform="scale(-1, 1)" />
+                                <path d="M-55,45 C-65,35 -85,35 -95,45 C-105,55 -105,75 -95,85 C-85,95 -65,95 -55,85 C-45,75 -45,55 -55,45 Z" fill="#fff" />
+                            </g>
+                            <!-- Modern elements -->
+                            <circle cx="50" cy="150" r="10" fill="#06D6A0" />
+                            <circle cx="90" cy="160" r="8" fill="#06D6A0" />
+                            <circle cx="130" cy="150" r="12" fill="#06D6A0" />
+                            <circle cx="170" cy="160" r="7" fill="#06D6A0" />
+                            <circle cx="210" cy="150" r="9" fill="#06D6A0" />
+                            <circle cx="250" cy="160" r="11" fill="#06D6A0" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cultural Impact Section -->
+    <section class="py-16 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Lindy Hop 的文化影響</h2>
+                <p class="text-lg max-w-3xl mx-auto">作為一種社交舞蹈形式，Lindy Hop 不僅是一種娛樂，更是一種文化表達和社會運動。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="order-2 md:order-1">
+                    <h3 class="text-2xl font-bold mb-4">打破種族隔閡</h3>
+                    <p class="mb-4">在種族隔離的年代，Savoy Ballroom 是少數允許不同種族共舞的場所之一。Lindy Hop 成為了跨越種族界限的文化橋樑，促進了不同社群間的交流與理解。</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4 mt-8">全球社群</h3>
+                    <p class="mb-4">現今，Lindy Hop 已發展成為一個全球性的社群，世界各地舉辦無數的舞蹈活動、工作坊和比賽。這個社群強調包容、尊重和舞蹈的純粹樂趣。</p>
+                    
+                    <h3 class="text-2xl font-bold mb-4 mt-8">文化保存</h3>
+                    <p>Lindy Hop 的復興不僅是對舞蹈形式的保存，也是對非裔美國人文化遺產的重要紀念。現代舞者致力於了解和尊重這門舞蹈的歷史根源，同時將其帶入新時代。</p>
+                </div>
+                
+                <div class="order-1 md:order-2 relative h-96 overflow-hidden rounded-lg vintage-border">
+                    <svg class="w-full h-full" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Cultural impact illustration -->
+                        <rect width="400" height="400" fill="#f8f8f8" />
+                        
+                        <!-- Globe -->
+                        <circle cx="200" cy="200" r="150" fill="#118AB2" opacity="0.2" />
+                        <circle cx="200" cy="200" r="145" fill="none" stroke="#333" stroke-width="2" />
+                        
+                        <!-- Continents -->
+                        <path d="M100,150 C120,140 150,160 170,150 C190,140 210,160 230,150 C250,140 270,160 290,150 C310,140 330,160 350,150" stroke="#333" stroke-width="2" fill="none" />
+                        <path d="M80,200 C100,190 130,210 150,200 C170,190 190,210 210,200 C230,190 250,210 270,200 C290,190 310,210 330,200" stroke="#333" stroke-width="2" fill="none" />
+                        <path d="M120,250 C140,240 170,260 190,250 C210,240 230,260 250,250 C270,240 290,260 310,250" stroke="#333" stroke-width="2" fill="none" />
+                        
+                        <!-- Dancing figures around the globe -->
+                        <g transform="translate(100, 100) scale(0.5)">
+                            <path d="M50,20 C70,0 130,0 150,20 C170,40 170,80 150,100 C130,120 70,120 50,100 C30,80 30,40 50,20 Z" fill="#333" />
+                            <path d="M80,40 C90,30 110,30 120,40 C130,50 130,70 120,80 C110,90 90,90 80,80 C70,70 70,50 80,40 Z" fill="#fff" />
+                        </g>
+                        
+                        <g transform="translate(250, 100) scale(0.5)">
+                            <path d="M50,20 C70,0 130,0 150,20 C170,40 170,80 150,100 C130,120 70,120 50,100 C30,80 30,40 50,20 Z" fill="#333" transform="scale(-1, 1)" />
+                            <path d="M-80,40 C-90,30 -110,30 -120,40 C-130,50 -130,70 -120,80 C-110,90 -90,90 -80,80 C-70,70 -70,50 -80,40 Z" fill="#fff" />
+                        </g>
+                        
+                        <g transform="translate(150, 280) scale(0.5)">
+                            <path d="M50,20 C70,0 130,0 150,20 C170,40 170,80 150,100 C130,120 70,120 50,100 C30,80 30,40 50,20 Z" fill="#333" />
+                            <path d="M80,40 C90,30 110,30 120,40 C130,50 130,70 120,80 C110,90 90,90 80,80 C70,70 70,50 80,40 Z" fill="#fff" />
+                        </g>
+                        
+                        <g transform="translate(300, 280) scale(0.5)">
+                            <path d="M50,20 C70,0 130,0 150,20 C170,40 170,80 150,100 C130,120 70,120 50,100 C30,80 30,40 50,20 Z" fill="#333" transform="scale(-1, 1)" />
+                            <path d="M-80,40 C-90,30 -110,30 -120,40 C-130,50 -130,70 -120,80 C-110,90 -90,90 -80,80 C-70,70 -70,50 -80,40 Z" fill="#fff" />
+                        </g>
+                        
+                        <!-- Music notes -->
+                        <g class="dancing-element" style="animation-delay: 0.2s;">
+                            <path d="M80,80 Q90,60 100,80 Q110,100 120,80" stroke="#FFD166" stroke-width="2" fill="none" />
+                            <circle cx="120" cy="80" r="8" fill="#FFD166" />
+                        </g>
+                        <g class="dancing-element" style="animation-delay: 0.5s;">
+                            <path d="M280,80 Q290,60 300,80 Q310,100 320,80" stroke="#FFD166" stroke-width="2" fill="none" />
+                            <circle cx="320" cy="80" r="8" fill="#FFD166" />
+                        </g>
+                        <g class="dancing-element" style="animation-delay: 0.8s;">
+                            <path d="M180,320 Q190,300 200,320 Q210,340 220,320" stroke="#FFD166" stroke-width="2" fill="none" />
+                            <circle cx="220" cy="320" r="8" fill="#FFD166" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Music Section -->
+    <section class="py-16 px-6 bg-gray-50">
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Lindy Hop 與音樂</h2>
+                <p class="text-lg max-w-3xl mx-auto">Lindy Hop 與爵士樂有著不可分割的關係，舞蹈的發展與音樂風格的演變緊密相連。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Music Card 1 -->
+                <div class="bg-white p-6 rounded-lg vintage-border">
+                    <div class="h-48 bg-yellow-100 rounded-md mb-4 overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Stylized saxophone -->
+                            <rect width="300" height="200" fill="#FFD166" opacity="0.2" />
+                            <path d="M100,50 C120,40 150,60 170,50 C190,40 210,60 230,50 L220,150 C200,160 170,140 150,150 C130,160 100,140 80,150 L100,50 Z" fill="#D4AF37" />
+                            <path d="M100,50 L80,150" stroke="#333" stroke-width="2" fill="none" />
+                            <path d="M130,45 L110,145" stroke="#333" stroke-width="2" fill="none" />
+                            <path d="M160,40 L140,140" stroke="#333" stroke-width="2" fill="none" />
+                            <path d="M190,45 L170,145" stroke="#333" stroke-width="2" fill="none" />
+                            <path d="M220,50 L200,150" stroke="#333" stroke-width="2" fill="none" />
+                            <circle cx="100" cy="50" r="10" fill="#333" />
+                            <circle cx="130" cy="45" r="8" fill="#333" />
+                            <circle cx="160" cy="40" r="8" fill="#333" />
+                            <circle cx="190" cy="45" r="8" fill="#333" />
+                            <circle cx="220" cy="50" r="10" fill="#333" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">搖擺爵士樂</h3>
+                    <p>1930-40年代的搖擺爵士樂是 Lindy Hop 的主要伴奏音樂。大樂團如 Count Basie、Duke Ellington 和 Benny Goodman 的音樂提供了豐富的節奏和旋律，完美配合舞蹈的活力和即興性。</p>
+                </div>
+                
+                <!-- Music Card 2 -->
+                <div class="bg-white p-6 rounded-lg vintage-border">
+                    <div class="h-48 bg-blue-100 rounded-md mb-4 overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Stylized trumpet -->
+                            <rect width="300" height="200" fill="#118AB2" opacity="0.2" />
+                            <path d="M50,100 L200,100 L220,80 L240,100 L220,120 L200,100" fill="#D4AF37" />
+                            <circle cx="240" cy="100" r="30" fill="#D4AF37" />
+                            <circle cx="240" cy="100" r="20" fill="#118AB2" opacity="0.3" />
+                            <circle cx="50" cy="100" r="10" fill="#333" />
+                            <path d="M50,100 C70,70 100,130 120,100" stroke="#333" stroke-width="2" fill="none" />
+                            <g class="dancing-element" style="animation-delay: 0.3s;">
+                                <path d="M260,70 Q270,60 280,70" stroke="#333" stroke-width="2" fill="none" />
+                                <path d="M260,130 Q270,140 280,130" stroke="#333" stroke-width="2" fill="none" />
+                            </g>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">重要音樂家</h3>
+                    <p>Chick Webb、Ella Fitzgerald、Louis Armstrong 等音樂家的作品對 Lindy Hop 的發展有著深遠影響。他們創新的節奏和編曲為舞者提供了豐富的表達空間，促進了舞蹈風格的多樣化。</p>
+                </div>
+                
+                <!-- Music Card 3 -->
+                <div class="bg-white p-6 rounded-lg vintage-border">
+                    <div class="h-48 bg-green-100 rounded-md mb-4 overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Stylized modern music elements -->
+                            <rect width="300" height="200" fill="#06D6A0" opacity="0.2" />
+                            <rect x="50" y="50" width="200" height="100" rx="10" fill="#333" />
+                            <circle cx="80" cy="80" r="15" fill="#06D6A0" />
+                            <circle cx="120" cy="80" r="15" fill="#06D6A0" />
+                            <circle cx="160" cy="80" r="15" fill="#06D6A0" />
+                            <circle cx="200" cy="80" r="15" fill="#06D6A0" />
+                            <circle cx="240" cy="80" r="15" fill="#06D6A0" />
+                            <rect x="70" y="120" width="20" height="5" fill="#06D6A0" />
+                            <rect x="110" y="120" width="20" height="5" fill="#06D6A0" />
+                            <rect x="150" y="120" width="20" height="5" fill="#06D6A0" />
+                            <rect x="190" y="120" width="20" height="5" fill="#06D6A0" />
+                            <rect x="230" y="120" width="20" height="5" fill="#06D6A0" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">現代音樂選擇</h3>
+                    <p>現代 Lindy Hop 舞者除了跳傳統爵士樂外，也會選擇現代復古爵士樂、電子搖擺樂等風格。這些新音樂保留了搖擺感，同時為舞蹈注入了新的活力和創意。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Resources Section -->
+    <section class="py-16 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">學習資源</h2>
+                <p class="text-lg max-w-3xl mx-auto">想要開始學習 Lindy Hop？以下是一些有用的資源和建議。</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-lg vintage-border">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">初學者建議</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>參加當地的入門課程，親身體驗舞蹈的樂趣</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>參與社交舞會，實踐所學並融入社群</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>聆聽爵士樂，培養對音樂的感覺和理解</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>觀看經典影片，了解舞蹈的歷史和風格</span>
+                            </li>
+                        </ul>
+                        
+                        <h3 class="text-2xl font-bold mb-4 mt-8">推薦書籍</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                <span>《Frankie Manning: Ambassador of Lindy Hop》by Frankie Manning</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                <span>《Swingin' at the Savoy》by Norma Miller</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">經典影片</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                                </svg>
+                                <span>《Hellzapoppin'》(1941) - 包含 Whitey's Lindy Hoppers 的經典表演</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                                </svg>
+                                <span>《A Day at the Races》(1937) - 馬克思兄弟電影中的 Lindy Hop 片段</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                                </svg>
+                                <span>《Swing Kids》(1993) - 描述二戰時期德國青年對搖擺舞的熱愛</span>
+                            </li>
+                        </ul>
+                        
+                        <h3 class="text-2xl font-bold mb-4 mt-8">線上資源</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                                </svg>
+                                <span>iLindy.com - 提供線上課程和教學視頻</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                                </svg>
+                                <span>Yehoodi.com - Lindy Hop 社群網站，提供活動資訊和討論</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                                </svg>
+                                <span>Swingmap.com - 全球 Lindy Hop 活動和課程地圖</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-6 bg-yellow-50 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4">開始你的 Lindy Hop 之旅</h3>
+                    <p class="mb-4">無論你是對舞蹈歷史感興趣，還是想學習一種有趣的社交活動，Lindy Hop 都是一個絕佳的選擇。它不僅是一種舞蹈，更是一種生活方式和社群文化。</p>
+                    <div class="flex justify-center">
+                        <a href="index.html#classes" class="btn-swing bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-md vintage-border">探索我們的課程</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-12 px-6 bg-yellow-500 text-white">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-2xl font-bold">訂閱我們的電子報</h3>
+                    <p>獲取最新的課程資訊、活動通知與舞蹈小知識！</p>
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col sm:flex-row">
+                    <input type="email" placeholder="您的電子郵件" class="flex-grow px-4 py-3 rounded-l-md focus:outline-none mb-3 sm:mb-0">
+                    <button class="bg-black text-white px-6 py-3 rounded-md sm:rounded-l-none sm:rounded-r-md hover:bg-gray-800 transition-colors">訂閱</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer class="bg-gray-900 text-white py-12 px-6">
+    <div class="container mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center mb-4">
+                    <div class="record-spin mr-3">
+                        <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="45" fill="#f8f8f8" />
+                            <circle cx="50" cy="50" r="20" fill="#333" />
+                            <circle cx="50" cy="50" r="5" fill="#f8f8f8" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold">JFSwing</h4>
+                </div>
+                <p class="text-gray-400 mb-4">讓搖擺舞成為你生活的一部分，體驗音樂與舞蹈帶來的無限樂趣。</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-lg font-bold mb-4">快速連結</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">首頁</a></li>
+                    <li><a href="index.html#classes" class="text-gray-400 hover:text-white transition-colors">常態課程</a></li>
+                    <li><a href="index.html#workshops" class="text-gray-400 hover:text-white transition-colors">工作坊</a></li>
+                    <li><a href="index.html#about" class="text-gray-400 hover:text-white transition-colors">關於我們</a></li>
+                    <li><a href="lindy-hop.html" class="text-gray-400 hover:text-white transition-colors">Lindy Hop 歷史</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-lg font-bold mb-4">聯絡資訊</h4>
+                <ul class="space-y-2 text-gray-400">
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span>台北市大安區復興南路一段390號</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                        <span>+886 2 6631 6588</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span>contact@jfswing.com</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-lg font-bold mb-4">營業時間</h4>
+                <ul class="space-y-2 text-gray-400">
+                    <li class="flex justify-between">
+                        <span>週一至週五</span>
+                        <span>14:00 - 22:00</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>週六</span>
+                        <span>10:00 - 22:00</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>週日</span>
+                        <span>10:00 - 18:00</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-500 text-sm mb-4 md:mb-0">© 2023 JFSwing. 保留所有權利。</p>
+            <div class="flex space-x-6">
+                <a href="#" class="text-gray-500 hover:text-gray-300 text-sm transition-colors">隱私政策</a>
+                <a href="#" class="text-gray-500 hover:text-gray-300 text-sm transition-colors">使用條款</a>
+                <a href="#" class="text-gray-500 hover:text-gray-300 text-sm transition-colors">常見問題</a>
+            </div>
+        </div>
+    </div>
+</footer>
