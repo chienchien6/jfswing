@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://jfswing.netlify.app/sitemap.xml
+Sitemap: https://www.jfswing.com/sitemap.xml
