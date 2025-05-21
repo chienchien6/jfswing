@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jacob & Teni Workshop - JFSwing</title>
+    <link rel="icon" href="JF.jpg" type="image/jpeg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="common.css">
+    <script src="common.js"></script>
+    <style>
+
+h1, h2, h3, h4 {
+        font-family: 'Playfair Display', serif;
+    }
+    
+    .vintage-border {
+        border: 2px solid #333;
+        box-shadow: 5px 5px 0px #333;
+    }
+    
+    .btn-swing {
+        transition: all 0.3s ease;
+    }
+    
+    .btn-swing:hover {
+        transform: rotate(-2deg) scale(1.05);
+    }
+    
+    .record-spin {
+        animation: spin 8s linear infinite;
+    }
+    
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    .dancing-element {
+        animation: dance 3s infinite alternate ease-in-out;
+    }
+    
+    @keyframes dance {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(-10px) rotate(5deg); }
+    }
+    
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        height: 0;
+        overflow: hidden;
+    }
+    
+    .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .countdown-timer {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .countdown-box {
+        background-color: #333;
+        color: white;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        min-width: 80px;
+        text-align: center;
+    }
+    
+    .countdown-number {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    
+    .countdown-label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+    }
+    
+    .feature-card {
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .testimonial-card {
+        position: relative;
+    }
+    
+    .testimonial-card::before {
+        content: '"';
+        position: absolute;
+        top: -20px;
+        left: 20px;
+        font-size: 80px;
+        font-family: 'Playfair Display', serif;
+        color: rgba(255, 209, 102, 0.3);
+        line-height: 1;
+    }
+    
+    .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.95);
+        z-index: 100;
+        padding: 2rem;
+    }
+    
+    .mobile-menu.active {
+        display: block;
+    }
+    
+    .faq-item {
+        border-bottom: 1px solid #e5e5e5;
+    }
+    
+    .faq-question {
+        cursor: pointer;
+        padding: 1rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        padding: 0 1rem;
+    }
+    
+    .faq-answer.active {
+        max-height: 500px;
+        padding-bottom: 1rem;
+    }
+    
+    .faq-icon {
+        transition: transform 0.3s ease;
+    }
+    
+    .faq-icon.active {
+        transform: rotate(45deg);
+    }
+    
+    .highlight-text {
+        background: linear-gradient(transparent 60%, rgba(255, 209, 102, 0.4) 40%);
+        display: inline;
+    }
+    
+    .registration-form input,
+    .registration-form select,
+    .registration-form textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #e5e5e5;
+        border-radius: 0.25rem;
+        margin-bottom: 1rem;
+    }
+    
+    .registration-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+    
+    .schedule-item {
+        position: relative;
+        padding-left: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .schedule-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.5rem;
+        width: 1rem;
+        height: 1rem;
+        background-color: #FFD166;
+        border-radius: 50%;
+    }
+    
+    .schedule-item::after {
+        content: '';
+        position: absolute;
+        left: 0.5rem;
+        top: 1.5rem;
+        width: 2px;
+        height: calc(100% + 0.5rem);
+        background-color: #FFD166;
+    }
+    
+    .schedule-item:last-child::after {
+        display: none;
+    }
+</style>
+<!-- Navigation -->
+<nav class="bg-white py-4 px-6 shadow-md sticky top-0 z-50" aria-label="主導航">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="flex items-center">
+            <div class="record-spin mr-3" aria-hidden="true">
+                <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="JFSwing標誌">
+                    <circle cx="50" cy="50" r="45" fill="#333"></circle>
+                    <circle cx="50" cy="50" r="20" fill="#f8f8f8"></circle>
+                    <circle cx="50" cy="50" r="5" fill="#333"></circle>
+                </svg>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold"><a href="/" title="JFSwing首頁">JFSwing</a></h1>
+        </div>
+        <div class="hidden md:flex space-x-8" role="navigation" aria-label="主選單">
+            <a href="index.html" class="hover:text-yellow-600 transition-colors" title="前往首頁">首頁</a>
+            <a href="index.html#classes" class="hover:text-yellow-600 transition-colors" title="查看常態課程">常態課程</a>
+            <a href="index.html#workshops" class="hover:text-yellow-600 transition-colors" title="查看工作坊">工作坊</a>
+            <a href="lindyhop.html" class="hover:text-yellow-600 transition-colors" title="舞蹈脈絡">舞蹈脈絡</a>
+        </div>
+        <button class="mobile-menu-button md:hidden" aria-label="開啟選單" aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+        <div class="mobile-menu">
+            <button class="mobile-menu-close" aria-label="關閉選單">×</button>
+            <ul>
+                <li><a href="index.html" title="前往首頁">首頁</a></li>
+                <li><a href="index.html#classes" title="查看常態課程">常態課程</a></li>
+                <li><a href="index.html#workshops" title="查看工作坊">工作坊</a></li>
+                <li><a href="lindyhop.html" title="舞蹈脈絡">舞蹈脈絡</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="py-16 md:py-24 px-6 bg-yellow-50 relative overflow-hidden">
+    <div class="container mx-auto flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 mb-10 md:mb-0">
+            <h2 class="text-4xl md:text-6xl font-bold mb-6">Balboa 大師工作坊<br><span class="text-yellow-600">Jacob & Teni</span></h2>
+            <p class="text-lg mb-8">與國際頂尖 Balboa 舞者 Jacob Wigger 和 Teni Lopez-Cardenas 一起，探索這個優雅、精準且充滿音樂性的舞蹈風格。</p>
+            <div class="flex flex-wrap gap-4">
+                <a href="#registration" class="btn-swing bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-md vintage-border">立即報名</a>
+                <a href="#videos" class="btn-swing bg-white hover:bg-gray-100 text-yellow-600 font-bold py-3 px-6 rounded-md vintage-border">觀看影片</a>
+            </div>
+        </div>
+        <div class="md:w-1/2 relative">
+            <div class="relative w-full h-80 md:h-96">
+                <svg class="w-full h-full" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="200" cy="200" r="180" fill="#FFD166" opacity="0.8" />
+                    <g class="dancing-element">
+                        <!-- Stylized dancing couple silhouette - more close together for Balboa -->
+                        <path d="M170,120 C190,100 210,100 230,120 C250,140 250,180 230,200 C210,220 190,220 170,200 C150,180 150,140 170,120 Z" fill="#333" />
+                        <path d="M185,140 C195,130 205,130 215,140 C225,150 225,170 215,180 C205,190 195,190 185,180 C175,170 175,150 185,140 Z" fill="#fff" />
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <!-- Decorative elements -->
+    <div class="absolute top-20 left-10 dancing-element" style="animation-delay: 0.5s;">
+        <svg width="30" height="30" viewBox="0 0 100 100" fill="none">
+            <polygon points="50,0 61,35 100,35 69,57 82,91 50,70 18,91 31,57 0,35 39,35" fill="#EF476F" />
+        </svg>
+    </div>
+    <div class="absolute bottom-20 right-10 dancing-element" style="animation-delay: 1s;">
+        <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
+            <polygon points="50,0 61,35 100,35 69,57 82,91 50,70 18,91 31,57 0,35 39,35" fill="#06D6A0" />
+        </svg>
+    </div>
+</section>
+
+<!-- Countdown Section -->
+<section class="py-12 px-6 bg-white">
+    <div class="container mx-auto text-center">
+        <h3 class="text-2xl font-bold mb-6">工作坊倒數計時</h3>
+        <div class="countdown-timer">
+            <div class="countdown-box">
+                <div class="countdown-number" id="days">30</div>
+                <div class="countdown-label">天</div>
+            </div>
+            <div class="countdown-box">
+                <div class="countdown-number" id="hours">12</div>
+                <div class="countdown-label">時</div>
+            </div>
+            <div class="countdown-box">
+                <div class="countdown-number" id="minutes">45</div>
+                <div class="countdown-label">分</div>
+            </div>
+            <div class="countdown-box">
+                <div class="countdown-number" id="seconds">20</div>
+                <div class="countdown-label">秒</div>
+            </div>
+        </div>
+        <p class="mt-6 text-gray-600">名額有限，請盡快報名！</p>
+    </div>
+</section>
+
+<!-- Instructors Section -->
+<section class="py-16 px-6 bg-gray-50">
+    <div class="container mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">認識我們的講師</h2>
+            <p class="text-lg max-w-3xl mx-auto">Jacob Wigger 和 Teni Lopez-Cardenas 是當代 Balboa 界最頂尖的舞者之一，以其精湛的技巧、無縫的配合和富有音樂性的舞蹈風格而聞名。</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <!-- Jacob -->
+            <div class="bg-white p-6 rounded-lg vintage-border">
+                <div class="flex flex-col sm:flex-row items-center sm:items-start mb-6">
+                    <div class="w-40 h-40 rounded-full overflow-hidden mb-4 sm:mb-0 sm:mr-6 flex-shrink-0">
+                        <svg class="w-full h-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="100" cy="100" r="100" fill="#333" />
+                            <circle cx="100" cy="80" r="30" fill="#f8f8f8" />
+                            <path d="M50,120 C50,170 150,170 150,120 L150,110 C150,110 125,130 100,130 C75,130 50,110 50,110 L50,120 Z" fill="#f8f8f8" />
+                            <path d="M85,75 C85,78 88,80 90,80 C92,80 95,78 95,75" stroke="#333" stroke-width="2" fill="none" />
+                            <path d="M105,75 C105,78 108,80 110,80 C112,80 115,78 115,75" stroke="#333" stroke-width="2" fill="none" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Jacob Wigger</h3>
+                        <p class="text-gray-600 mb-4">來自洛杉磯的 Balboa 大師</p>
+                        <p>Jacob 是當代最受尊敬的 Balboa 舞者之一，以其精準的腳法和音樂詮釋能力而聞名。他在全球各大比賽中屢獲殊榮，並在世界各地教授工作坊。</p>
+                    </div>
+                </div>
+                <div class="border-t border-gray-200 pt-4">
+                    <h4 class="font-bold mb-2">獲獎經歷：</h4>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700">
+                        <li>ILHC 2019 Pro Balboa 冠軍</li>
+                        <li>Camp Hollywood 2018 NJC Balboa 冠軍</li>
+                        <li>California Balboa Classic 多次冠軍</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Teni -->
+            <div class="bg-white p-6 rounded-lg vintage-border">
+                <div class="flex flex-col sm:flex-row items-center sm:items-start mb-6">
+                    <div class="w-40 h-40 rounded-full overflow-hidden mb-4 sm:mb-0 sm:mr-6 flex-shrink-0">
+                        <svg class="w-full h-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="100" cy="100" r="100" fill="#333" />
+                            <circle cx="100" cy="80" r="30" fill="#f8f8f8" />
+                            <path d="M50,120 C50,170 150,170 150,120 L150,110 C150,110 125,130 100,130 C75,130 50,110 50,110 L50,120 Z" fill="#f8f8f8" />
+                            <path d="M85,75 C85,78 88,80 90,80 C92,80 95,78 95,75" stroke="#333" stroke-width="2" fill="none" />
+                            <path d="M105,75 C105,78 108,80 110,80 C112,80 115,78 115,75" stroke="#333" stroke-width="2" fill="none" />
+                            <path d="M85,95 C90,100 110,100 115,95" stroke="#333" stroke-width="2" fill="none" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Teni Lopez-Cardenas</h3>
+                        <p class="text-gray-600 mb-4">來自紐約的 Balboa 大師</p>
+                        <p>Teni 以其優雅的舞姿和出色的跟隨能力而聞名，她與 Jacob 搭檔多年，形成了完美的舞伴默契。她的教學風格清晰易懂，深受學生喜愛。</p>
+                    </div>
+                </div>
+                <div class="border-t border-gray-200 pt-4">
+                    <h4 class="font-bold mb-2">獲獎經歷：</h4>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700">
+                        <li>ILHC 2019 Pro Balboa 冠軍</li>
+                        <li>ILHC 2017 Pro Balboa 亞軍</li>
+                        <li>多個國際 Balboa 比賽前三名</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Videos Section -->
+<section id="videos" class="py-16 px-6">
+    <div class="container mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">精彩影片展示</h2>
+            <p class="text-lg max-w-3xl mx-auto">觀賞 Jacob 和 Teni 在各大比賽和表演中的精彩片段，感受他們的舞蹈魅力。</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Video 1 -->
+            <div class="bg-white p-6 rounded-lg vintage-border">
+                <h3 class="text-xl font-bold mb-4">ILHC 2019 - Pro Balboa Finals (冠軍)</h3>
+                <div class="video-container mb-4">
+                    <iframe src="https://www.youtube.com/embed/k1gZqO5Z4eQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-700">在國際林迪舞錦標賽 (ILHC) 上的經典比賽片段，展現了他們比賽中的高超水準和默契，最終獲得冠軍。</p>
+            </div>
+            
+            <!-- Video 2 -->
+            <div class="bg-white p-6 rounded-lg vintage-border">
+                <h3 class="text-xl font-bold mb-4">Camp Hollywood 2018 - NJC Balboa Champions</h3>
+                <div class="video-container mb-4">
+                    <iframe src="https://www.youtube.com/embed/D8X7e-gWJqg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-700">在 Camp Hollywood 全國吉特巴錦標賽 (NJC) 上的精彩表現，通常這個比賽的 Balboa 項目競爭非常激烈。</p>
+            </div>
+            
+            <!-- Video 3 -->
+            <div class="bg-white p-6 rounded-lg vintage-border">
+                <h3 class="text-xl font-bold mb-4">The Balboa Experiment 2017 - Pro Showcase</h3>
+                <div class="video-container mb-4">
+                    <iframe src="https://www.youtube.com/embed/Yh7nN2Jg7_s" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-700">這是一個更偏向表演性質的片段，可以欣賞到他們流暢的動作和對音樂的詮釋。</p>
+            </div>
+            
+            <!-- Video 4 -->
+            <div class="bg-white p-6 rounded-lg vintage-border">
+                <h3 class="text-xl font-bold mb-4">ILHC 2017 - Pro Balboa (亞軍)</h3>
+                <div class="video-container mb-4">
+                    <iframe src="https://www.youtube.com/embed/75yS3J7sX5U" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-700">另一場在 ILHC 上的精彩比賽，展現了他們一貫的高水準，獲得亞軍。</p>
+            </div>
+        </div>
+        
+        <div class="mt-12 bg-yellow-50 p-6 rounded-lg">
+            <h3 class="text-xl font-bold mb-4">觀看重點</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-bold mb-2">連接 (Connection)</h4>
+                    <p class="text-gray-700 mb-4">注意他們之間幾乎看不見的引導和跟隨，這是 Balboa 舞蹈中最重要的元素之一。</p>
+                    
+                    <h4 class="font-bold mb-2">腳法 (Footwork)</h4>
+                    <p class="text-gray-700">觀察 Balboa 特有的細膩快速腳步，尤其是在快節奏音樂中的精準控制。</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-2">音樂性 (Musicality)</h4>
+                    <p class="text-gray-700 mb-4">留意他們如何用舞蹈詮釋音樂的細節，包括停頓、強調和變化。</p>
+                    
+                    <h4 class="font-bold mb-2">流暢度 (Flow)</h4>
+                    <p class="text-gray-700">欣賞動作之間的轉換如何自然流暢，沒有任何生硬或突兀的感覺。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Workshop Details Section -->
+<section class="py-16 px-6 bg-gray-50">
+    <div class="container mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">工作坊詳情</h2>
+            <p class="text-lg max-w-3xl mx-auto">這次難得的機會，Jacob 和 Teni 將帶來為期兩天的密集 Balboa 工作坊，適合各個程度的舞者參加。</p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Workshop Info -->
+            <div class="lg:col-span-2">
+                <div class="bg-white p-6 rounded-lg vintage-border mb-8">
+                    <h3 class="text-2xl font-bold mb-4">課程內容</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-xl font-bold mb-2">初級班</h4>
+                            <p class="mb-2">適合有基本搖擺舞經驗但 Balboa 初學者的舞者。</p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li>Balboa 基本步法與姿勢</li>
+                                <li>Pure Balboa 的核心技巧</li>
+                                <li>基本旋轉與變化</li>
+                                <li>音樂詮釋入門</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xl font-bold mb-2">中級班</h4>
+                            <p class="mb-2">適合已有 Balboa 基礎的舞者。</p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li>進階步法與變化</li>
+                                <li>Bal-Swing 元素的融入</li>
+                                <li>舞伴連接的深入探討</li>
+                                <li>音樂詮釋與節奏變化</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xl font-bold mb-2">高級班</h4>
+                            <p class="mb-2">適合有豐富 Balboa 經驗的舞者。</p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li>複雜變化與組合</li>
+                                <li>個人風格的發展</li>
+                                <li>高階音樂詮釋技巧</li>
+                                <li>比賽與表演技巧</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg vintage-border">
+                    <h3 class="text-2xl font-bold mb-4">課程時間表</h3>
+                    <div class="mb-6">
+                        <h4 class="text-xl font-bold mb-3">第一天 (週六)</h4>
+                        <div class="space-y-4">
+                            <div class="schedule-item">
+                                <p class="font-bold">10:00 - 11:30</p>
+                                <p>初級班：Balboa 基礎與姿勢</p>
+                            </div>
+                            <div class="schedule-item">
+                                <p class="font-bold">11:45 - 13:15</p>
+                                <p>中級班：進階步法與變化</p>
+                            </div>
+                            <div class="schedule-item">
+                                <p class="font-bold">14:30 - 16:00</p>
+                                <p>高級班：複雜變化與個人風格</p>
+                            </div>
+                            <div class="schedule-item">
+                                <p class="font-bold">16:15 - 17:45</p>
+                                <p>混合班：音樂詮釋工作坊</p>
+                            </div>
+                            <div class="schedule-item">
+                                <p class="font-bold">20:00 - 23:00</p>
+                                <p>社交舞會 (含講師表演)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-bold mb-3">第二天 (週日)</h4>
+                        <div class="space-y-4">
+                            <div class="schedule-item">
+                                <p class="font-bold">10:00 - 11:30</p>
+                                <p>初級班：基本旋轉與變化</p>
+                            </div>
+                            <div class="schedule-item">
+                                <p class="font-bold">11:45 - 13:15</p>
+                                <p>中級班：Bal-Swing 元素</p>
+                            </div>
+                            <div class="schedule-item">
+                                <p class="font-bold">14:30 - 16:00</p>
+                                <p>高級班：比賽與表演技巧</p>
+                            </div>
+                            <div class="schedule-item">
+                                <p class="font-bold">16:15 - 17:45</p>
+                                <p>混合班：問答與自由練習</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pricing & Registration -->
+            <div>
+                <div class="bg-white p-6 rounded-lg vintage-border mb-8">
+                    <h3 class="text-2xl font-bold mb-4">工作坊資訊</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <div>
+                                <span class="font-bold">日期：</span>
+                                <p>2023年10月21-22日 (週六、日)</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <div>
+                                <span class="font-bold">地點：</span>
+                                <p>JFSwing 舞蹈教室<br>台北市信義區松仁路 100 號 5 樓</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                            </svg>
+                            <div>
+                                <span class="font-bold">費用：</span>
+                                <p>全程參與：$3,800 元<br>單日參與：$2,200 元<br>單堂課程：$800 元</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div>
+                                <span class="font-bold">備註：</span>
+                                <p>早鳥優惠：9月30日前報名享85折優惠<br>社交舞會門票已包含在工作坊費用中</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-yellow-500 p-6 rounded-lg vintage-border text-white">
+                    <h3 class="text-2xl font-bold mb-4">立即報名</h3>
+                    <p class="mb-4">名額有限，請盡快報名以確保您的位置！</p>
+                    <a href="#registration" class="block w-full bg-white text-yellow-600 text-center font-bold py-3 rounded-md hover:bg-gray-100 transition-colors">前往報名表單</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-16 px-6">
+    <div class="container mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">學員回饋</h2>
+            <p class="text-lg max-w-3xl mx-auto">來自世界各地參加過 Jacob 和 Teni 工作坊的學員分享他們的學習經驗。</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Testimonial 1 -->
+            <div class="bg-white p-6 rounded-lg vintage-border testimonial-card">
+                <p class="mb-6 text-gray-700">"Jacob 和 Teni 的教學方式非常清晰，他們不僅展示動作，更重要的是解釋背後的原理。參加他們的工作坊後，我的 Balboa 水平提升了一大步！"</p>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-gray-200 mr-4 flex items-center justify-center">
+                        <span class="text-gray-500 font-bold">LM</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">李明</h4>
+                        <p class="text-sm text-gray-600">台北</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial 2 -->
+            <div class="bg-white p-6 rounded-lg vintage-border testimonial-card">
+                <p class="mb-6 text-gray-700">"作為一個中級舞者，我一直在尋找能幫助我突破瓶頸的課程。Teni 對於跟隨者的細節講解非常到位，讓我對 Balboa 有了全新的理解。"</p>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-gray-200 mr-4 flex items-center justify-center">
+                        <span class="text-gray-500 font-bold">WJ</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">王嘉</h4>
+                        <p class="text-sm text-gray-600">高雄</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial 3 -->
+            <div class="bg-white p-6 rounded-lg vintage-border testimonial-card">
+                <p class="mb-6 text-gray-700">"Jacob 對音樂的詮釋能力令人驚嘆，他教會我如何真正「聽」音樂，而不只是跟著節拍跳舞。這對我的舞蹈表現產生了革命性的改變。"</p>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-gray-200 mr-4 flex items-center justify-center">
+                        <span class="text-gray-500 font-bold">CY</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">陳怡</h4>
+                        <p class="text-sm text-gray-600">台中</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-16 px-6 bg-gray-50">
+    <div class="container mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">為什麼選擇這個工作坊？</h2>
+            <p class="text-lg max-w-3xl mx-auto">這不僅僅是一個舞蹈課程，而是一次難得的學習體驗。</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-white p-6 rounded-lg vintage-border feature-card">
+                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">世界級講師</h3>
+                <p class="text-gray-700">向國際頂尖 Balboa 舞者學習，獲得最專業、最前沿的舞蹈知識和技巧。</p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="bg-white p-6 rounded-lg vintage-border feature-card">
+                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">社群連結</h3>
+                <p class="text-gray-700">認識來自各地的舞者，擴展您的舞蹈社交圈，建立寶貴的友誼和連結。</p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="bg-white p-6 rounded-lg vintage-border feature-card">
+                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">音樂詮釋</h3>
+                <p class="text-gray-700">深入了解如何與音樂連結，提升您的舞蹈表現力和音樂詮釋能力。</p>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="bg-white p-6 rounded-lg vintage-border feature-card">
+                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">技術突破</h3>
+                <p class="text-gray-700">無論您是初學者還是有經驗的舞者，都能在這個工作坊中找到適合自己的挑戰和成長。</p>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="bg-white p-6 rounded-lg vintage-border feature-card">
+                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">舞蹈樂趣</h3>
+                <p class="text-gray-700">在輕鬆愉快的氛圍中學習，體驗 Balboa 帶來的純粹樂趣和喜悅。</p>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="bg-white p-6 rounded-lg vintage-border feature-card">
+                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">難得機會</h3>
+                <p class="text-gray-700">Jacob 和 Teni 在台灣的教學機會非常稀少，不要錯過這次難得的學習機會。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 px-6">
+    <div class="container mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">常見問題</h2>
+            <p class="text-lg max-w-3xl mx-auto">對工作坊有疑問？以下是一些常見問題的解答。</p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg vintage-border">
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3 class="text-lg font-bold">我需要有舞伴一起報名嗎？</h3>
+                        <svg class="faq-icon w-6 h-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">不需要！我們鼓勵學員在課堂上與不同舞伴練習。工作坊中會安排輪換舞伴的機會，讓您能夠體驗不同的舞伴連接。當然，如果您有固定舞伴，也歡迎一起報名參加。</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3 class="text-lg font-bold">我完全沒有 Balboa 經驗，可以參加嗎？</h3>
+                        <svg class="faq-icon w-6 h-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">初級班適合有基本搖擺舞經驗但 Balboa 初學者的舞者。如果您完全沒有舞蹈經驗，建議先參加我們的常態初階課程，打好基礎後再參加工作坊。如果您已有其他搖擺舞經驗（如 Lindy Hop、Charleston 等），則非常適合參加初級班。</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3 class="text-lg font-bold">工作坊的授課語言是什麼？</h3>
+                        <svg class="faq-icon w-6 h-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">工作坊主要以英語授課，但會有中文翻譯協助。講師也會使用大量的肢體語言和示範，即使英語不是很流利的學員也能輕鬆理解。</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3 class="text-lg font-bold">我應該穿什麼服裝參加？</h3>
+                        <svg class="faq-icon w-6 h-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">建議穿著舒適、透氣的衣物，以便自由活動。鞋子方面，Balboa 最適合穿著平底、光滑鞋底的舞鞋或皮鞋。女士可以穿平底舞鞋，男士則建議穿著皮鞋或爵士舞鞋。請避免穿著運動鞋，因為它們的摩擦力較大，不利於旋轉和滑步動作。</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3 class="text-lg font-bold">如果我只能參加部分課程，可以嗎？</h3>
+                        <svg class="faq-icon w-6 h-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">可以！我們提供全程參與、單日參與和單堂課程的不同報名選項。您可以根據自己的時間和需求選擇適合的方案。不過，我們建議盡可能參加完整的課程，以獲得最佳的學習體驗。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Registration Form Section -->
+<section id="registration" class="py-16 px-6 bg-yellow-50">
+    <div class="container mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">立即報名</h2>
+            <p class="text-lg max-w-3xl mx-auto">填寫以下表單，預訂您在 Jacob & Teni Balboa 大師工作坊的位置。</p>
+        </div>
+        
+        <div class="bg-white p-8 rounded-lg vintage-border max-w-3xl mx-auto">
+            <form class="registration-form">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name">姓名</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div>
+                        <label for="email">電子郵件</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div>
+                        <label for="phone">電話</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div>
+                        <label for="dance_role">舞蹈角色</label>
+                        <select id="dance_role" name="dance_role" required>
+                            <option value="">請選擇</option>
+                            <option value="leader">Leader (引導者)</option>
+                            <option value="follower">Follower (跟隨者)</option>
+                            <option value="both">兩者皆可</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="experience">Balboa 經驗</label>
+                        <select id="experience" name="experience" required>
+                            <option value="">請選擇</option>
+                            <option value="beginner">初學者 (0-6個月)</option>
+                            <option value="intermediate">中級 (6個月-2年)</option>
+                            <option value="advanced">進階 (2年以上)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="package">報名方案</label>
+                        <select id="package" name="package" required>
+                            <option value="">請選擇</option>
+                            <option value="full">全程參與 ($3,800)</option>
+                            <option value="day1">僅第一天 ($2,200)</option>
+                            <option value="day2">僅第二天 ($2,200)</option>
+                            <option value="single">單堂課程 ($800/堂)</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="classes">如選擇單堂課程，請勾選欲參加的課程</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                            <div>
+                                <input type="checkbox" id="class1" name="classes[]" value="day1_beginner">
+                                <label for="class1" class="ml-2 font-normal">週六 10:00 初級班</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="class2" name="classes[]" value="day1_intermediate">
+                                <label for="class2" class="ml-2 font-normal">週六 11:45 中級班</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="class3" name="classes[]" value="day1_advanced">
+                                <label for="class3" class="ml-2 font-normal">週六 14:30 高級班</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="class4" name="classes[]" value="day1_mixed">
+                                <label for="class4" class="ml-2 font-normal">週六 16:15 混合班</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="class5" name="classes[]" value="day2_beginner">
+                                <label for="class5" class="ml-2 font-normal">週日 10:00 初級班</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="class6" name="classes[]" value="day2_intermediate">
+                                <label for="class6" class="ml-2 font-normal">週日 11:45 中級班</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="class7" name="classes[]" value="day2_advanced">
+                                <label for="class7" class="ml-2 font-normal">週日 14:30 高級班</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="class8" name="classes[]" value="day2_mixed">
+                                <label for="class8" class="ml-2 font-normal">週日 16:15 混合班</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="message">其他備註</label>
+                        <textarea id="message" name="message" rows="4"></textarea>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-md transition-colors">提交報名</button>
+                </div>
+                
+                <p class="mt-4 text-sm text-gray-600 text-center">提交後，我們將發送確認郵件和付款資訊至您的電子郵箱。</p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-16 px-6 bg-yellow-500 text-white">
+    <div class="container mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">準備好踏上 Balboa 之旅了嗎？</h2>
+        <p class="text-xl mb-8 max-w-3xl mx-auto">不要錯過這個與國際頂尖舞者學習的難得機會。名額有限，立即報名！</p>
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="#registration" class="btn-swing bg-white text-yellow-600 font-bold py-3 px-8 rounded-md vintage-border hover:bg-gray-100 transition-colors">立即報名</a>
+            <a href="#videos" class="btn-swing bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-md hover:bg-white hover:text-yellow-600 transition-colors">觀看影片</a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-12 px-6">
+    <div class="container mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h4 class="text-xl font-bold mb-4">JFSwing</h4>
+                <p class="text-gray-400">讓搖擺舞成為你生活的一部分，體驗音樂與舞蹈帶來的無限樂趣。</p>
+            </div>
+            <div>
+                <h4 class="text-lg font-bold mb-4">快速連結</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">首頁</a></li>
+                    <li><a href="index.html#classes" class="text-gray-400 hover:text-white transition-colors">常態課程</a></li>
+                    <li><a href="index.html#workshops" class="text-gray-400 hover:text-white transition-colors">工作坊</a></li>
+                    <li><a href="index.html#contact" class="text-gray-400 hover:text-white transition-colors">聯絡我們</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-bold mb-4">聯絡我們</h4>
+                <ul class="space-y-2 text-gray-400">
+                    <li>Email: info@jfswing.com</li>
+                    <li class="flex items-center space-x-2">
+                        <a href="https://www.facebook.com/jfswing.tw?locale=zh_TW" target="_blank" class="hover:text-white transition-colors">Facebook</a>
+                        <span>|</span>
+                        <a href="https://www.instagram.com/swing_jf/" target="_blank" class="hover:text-white transition-colors">Instagram</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+            <p>© 2023 JFSwing. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Mobile Menu Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+        
+        if (mobileMenuButton && mobileMenu && mobileMenuClose) {
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.add('active');
+            });
+            
+            mobileMenuClose.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+            });
+        }
+    });
+    
+    // FAQ Toggle
+    function toggleFAQ(element) {
+        const answer = element.nextElementSibling;
+        const icon = element.querySelector('.faq-icon');
+        
+        if (answer.classList.contains('active')) {
+            answer.classList.remove('active');
+            icon.classList.remove('active');
+        } else {
+            answer.classList.add('active');
+            icon.classList.add('active');
+        }
+    }
+    
+    // Countdown Timer
+    function updateCountdown() {
+        const targetDate = new Date('2023-10-21T10:00:00').getTime();
+        const now = new Date().getTime();
+        const difference = targetDate - now;
+        
+        if (difference > 0) {
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').innerText = days;
+            document.getElementById('hours').innerText = hours;
+            document.getElementById('minutes').innerText = minutes;
+            document.getElementById('seconds').innerText = seconds;
+        } else {
+            document.getElementById('days').innerText = '0';
+            document.getElementById('hours').innerText = '0';
+            document.getElementById('minutes').innerText = '0';
+            document.getElementById('seconds').innerText = '0';
+        }
+    }
+    
+    // Update countdown every second
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+    
+    // Form submission
+    document.querySelector('.registration-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('感謝您的報名！我們將盡快發送確認郵件和付款資訊至您的電子郵箱。');
+    });
+    
+    // Package selection logic
+    document.getElementById('package').addEventListener('change', function() {
+        const checkboxContainer = document.querySelectorAll('input[type="checkbox"]');
+        const checkboxLabels = document.querySelectorAll('input[type="checkbox"] + label');
+        
+        if (this.value === 'single') {
+            checkboxContainer.forEach(checkbox => {
+                checkbox.disabled = false;
+            });
+            checkboxLabels.forEach(label => {
+                label.classList.remove('text-gray-400');
+            });
+        } else {
+            checkboxContainer.forEach(checkbox => {
+                checkbox.disabled = true;
+                checkbox.checked = false;
+            });
+            checkboxLabels.forEach(label => {
+                label.classList.add('text-gray-400');
+            });
+        }
+    });
+</script>
