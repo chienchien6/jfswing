@@ -31,69 +31,8 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <!-- 翻轉卡片的觸摸事件處理 -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 獲取所有翻轉卡片元素
-            const flipCards = document.querySelectorAll('.flip-card');
-            
-            // 為每個卡片添加點擊/觸摸事件
-            flipCards.forEach(card => {
-                // 使用觸摸事件處理移動設備
-                card.addEventListener('touchend', function(e) {
-                    // 只在移動設備上執行
-                    if (window.matchMedia('(max-width: 768px)').matches) {
-                        // 阻止默認行為，但不阻止冒泡
-                        e.preventDefault();
-                        this.classList.toggle('flipped');
-                    }
-                }, {passive: false});
-                
-                // 保留點擊事件作為備用
-                card.addEventListener('click', function(e) {
-                    // 只在移動設備上執行，並且只處理非觸摸引起的點擊
-                    if (window.matchMedia('(max-width: 768px)').matches && !window.touchTriggered) {
-                        this.classList.toggle('flipped');
-                    }
-                });
-            });
-            
-            // 設置全局標記，用於區分觸摸和鼠標事件
-            window.addEventListener('touchstart', function() {
-                window.touchTriggered = true;
-            });
-            
-            window.addEventListener('mousedown', function() {
-                window.touchTriggered = false;
-            });
-            
-            // 手機版菜單控制
-            const mobileMenuButton = document.querySelector('.mobile-menu-button');
-            const mobileMenuClose = document.querySelector('.mobile-menu-close');
-            const mobileMenu = document.querySelector('.mobile-menu');
-            
-            if (mobileMenuButton && mobileMenu && mobileMenuClose) {
-                // 打開菜單
-                mobileMenuButton.addEventListener('click', function() {
-                    mobileMenu.classList.add('active');
-                });
-                
-                // 關閉菜單
-                mobileMenuClose.addEventListener('click', function() {
-                    mobileMenu.classList.remove('active');
-                });
-                
-                // 點擊菜單項後自動關閉菜單
-                const menuLinks = mobileMenu.querySelectorAll('a');
-                menuLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        mobileMenu.classList.remove('active');
-                    });
-                });
-            }
-        });
-    </script>
+    <link rel="stylesheet" href="common.css">
+    <script src="common.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=Poppins:wght@300;400;600&amp;display=swap" rel="stylesheet">
     
@@ -188,162 +127,14 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="theme-color" content="#FFD166">
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #ffffff;
-            color: #333;
-        }
+        /* 基本樣式和響應式導航菜單樣式已移至common.css */
         
-        h1, h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
-        }
+        /* 移動菜單樣式已移至common.css */
         
-        /* 響應式導航菜單樣式 */
-        .mobile-menu-button {
-            display: none;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background-color: #FFD166;
-            color: #333;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
+        /* 翻轉卡片、動畫效果和其他共用樣式已移至common.css */
         
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 70%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.95);
-            z-index: 999;
-            padding: 70px 20px 20px;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-        }
-        
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-        
-        .mobile-menu-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        
-        .mobile-menu ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .mobile-menu li {
-            margin-bottom: 15px;
-        }
-        
-        .mobile-menu a {
-            display: block;
-            padding: 10px;
-            color: #333;
-            text-decoration: none;
-            font-size: 18px;
-            border-bottom: 1px solid #eee;
-            transition: all 0.3s ease;
-        }
-        
-        .mobile-menu a:hover {
-            background-color: #FFD166;
-            padding-left: 15px;
-        }
-        
+        /* 特定於index頁面的樣式 */
         @media (max-width: 768px) {
-            .mobile-menu-button {
-                display: block;
-            }
-            
-            .mobile-menu {
-                display: block;
-            }
-            
-            .desktop-menu {
-                display: none;
-            }
-        }
-        
-        .vintage-border {
-            border: 2px solid #333;
-            box-shadow: 5px 5px 0px #333;
-        }
-        
-        .flip-card {
-            perspective: 1000px;
-            height: 300px;
-        }
-        
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
-        }
-        
-        .flip-card.flipped .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-        
-        /* 保留桌面端的hover效果 */
-        @media (hover: hover) {
-            .flip-card:hover .flip-card-inner {
-                transform: rotateY(180deg);
-            }
-        }
-        
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 0.5rem;
-        }
-        
-        .flip-card-back {
-            transform: rotateY(180deg);
-        }
-        
-        /* 為翻轉卡片的文字添加白色背景填充 */
-        .flip-card-back h3,
-        .flip-card-back li,
-        .flip-card-back p {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 2px 5px;
-            border-radius: 3px;
-            display: inline-block;
-        }
-        
-        /* 確保移動設備上的按鈕更容易點擊 */
-        @media (max-width: 768px) {
-            .btn-swing, a[href^="https://docs.google.com"] {
-                padding: 12px 20px !important;
-                margin: 15px auto !important;
-                display: block !important;
-                width: 80% !important;
-                text-align: center !important;
-                font-size: 1.2rem !important;
-            }
             #mobile-menu {
                 display: none;
             }
@@ -356,40 +147,6 @@
             .md\:hidden {
                 display: block;
             }
-        }
-        
-        .vintage-pattern {
-            background-image: radial-gradient(#f0f0f0 10%, transparent 11%),
-                            radial-gradient(#f0f0f0 10%, transparent 11%);
-            background-size: 10px 10px;
-            background-position: 0 0, 30px 30px;
-            background-repeat: repeat;
-        }
-        
-        .dancing-element {
-            animation: dance 3s infinite alternate ease-in-out;
-        }
-        
-        @keyframes dance {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-10px) rotate(5deg); }
-        }
-        
-        .btn-swing {
-            transition: all 0.3s ease;
-        }
-        
-        .btn-swing:hover {
-            transform: rotate(-2deg) scale(1.05);
-        }
-        
-        .record-spin {
-            animation: spin 8s linear infinite;
-        }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
         
         #codeModal {

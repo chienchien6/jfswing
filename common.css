@@ -1,0 +1,194 @@
+/* 基本樣式 */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+}
+
+/* 響應式導航菜單樣式 */
+.mobile-menu-button {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: #FFD166;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 70%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    z-index: 999;
+    padding: 70px 20px 20px;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.mobile-menu.active {
+    transform: translateX(0);
+}
+
+.mobile-menu-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.mobile-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobile-menu li {
+    margin-bottom: 15px;
+}
+
+.mobile-menu a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu a:hover {
+    background-color: #FFD166;
+    padding-left: 15px;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-button {
+        display: block;
+    }
+    
+    .mobile-menu {
+        display: block;
+    }
+    
+    .desktop-menu {
+        display: none;
+    }
+}
+
+/* 共用元素樣式 */
+.vintage-border {
+    border: 2px solid #333;
+    box-shadow: 5px 5px 0px #333;
+}
+
+.dancing-element {
+    animation: dance 3s infinite alternate ease-in-out;
+}
+
+@keyframes dance {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.btn-swing {
+    transition: all 0.3s ease;
+}
+
+.btn-swing:hover {
+    transform: rotate(-2deg) scale(1.05);
+}
+
+.record-spin {
+    animation: spin 8s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.vintage-pattern {
+    background-image: radial-gradient(#f0f0f0 10%, transparent 11%),
+                    radial-gradient(#f0f0f0 10%, transparent 11%);
+    background-size: 10px 10px;
+    background-position: 0 0, 30px 30px;
+    background-repeat: repeat;
+}
+
+/* 翻轉卡片樣式 */
+.flip-card {
+    perspective: 1000px;
+    height: 300px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* 保留桌面端的hover效果 */
+@media (hover: hover) {
+    .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 0.5rem;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+
+/* 為翻轉卡片的文字添加白色背景填充 */
+.flip-card-back h3,
+.flip-card-back li,
+.flip-card-back p {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2px 5px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+/* 確保移動設備上的按鈕更容易點擊 */
+@media (max-width: 768px) {
+    .btn-swing, a[href^="https://docs.google.com"] {
+        padding: 12px 20px !important;
+        margin: 15px auto !important;
+        display: block !important;
+        width: 80% !important;
+        text-align: center !important;
+        font-size: 1.2rem !important;
+    }
+}
