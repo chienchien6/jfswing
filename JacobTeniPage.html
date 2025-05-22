@@ -268,9 +268,9 @@ body {
             <h1 class="text-2xl md:text-3xl font-bold"><a href="/" title="JFSwing首頁">JFSwing</a></h1>
         </div>
         <div class="hidden md:flex space-x-8" role="navigation" aria-label="主選單">
-            <a href="#home" class="hover:text-yellow-600 transition-colors" title="前往首頁">首頁</a>
-            <a href="#classes" class="hover:text-yellow-600 transition-colors" title="查看常態課程">常態課程</a>
-            <a href="#workshops" class="hover:text-yellow-600 transition-colors" title="查看工作坊">工作坊</a>
+            <a href="index.html#home" class="hover:text-yellow-600 transition-colors" title="前往首頁">首頁</a>
+            <a href="index.html#classes" class="hover:text-yellow-600 transition-colors" title="查看常態課程">常態課程</a>
+            <a href="index.html#workshops" class="hover:text-yellow-600 transition-colors" title="查看工作坊">工作坊</a>
             <a href="lindyhop.html" class="hover:text-yellow-600 transition-colors" title="舞蹈脈絡">舞蹈脈絡</a>
             <a href="JacobTeniPage.html" class="hover:text-yellow-600 transition-colors" title="Jacob&Teni WS">Jacob&Teni WS</a>
         </div>
@@ -706,7 +706,7 @@ body {
                         </svg>
                     </div>
                     <div class="faq-answer">
-                        <p class="text-gray-700">工作坊主要以英語授課，講師也會使用大量的肢體語言和示範，即使英語不是很流利的學員也能輕鬆理解。</p>
+                        <p class="text-gray-700">工作坊主要以英語授課，講師也會使用大量的肢體語言和示範，即使英語不是很流利的學員也能理解。</p>
                     </div>
                 </div>
                 
@@ -775,7 +775,6 @@ body {
             <div>
                 <h4 class="text-lg font-bold mb-4">聯絡我們</h4>
                 <ul class="space-y-2 text-gray-400">
-                    <li>Email: info@jfswing.com</li>
                     <li class="flex items-center space-x-2">
                         <a href="https://www.facebook.com/jfswing.tw?locale=zh_TW" target="_blank" class="hover:text-white transition-colors">Facebook</a>
                         <span>|</span>
@@ -792,36 +791,6 @@ body {
 
 
 
-// Countdown Timer Functionality
-function updateCountdown() {
-    // Set the target date for the workshop (UPDATE THIS DATE)
-    const targetDate = new Date('2025-06-15T00:00:00').getTime();
-    const now = new Date().getTime();
-    const distance = targetDate - now;
-
-    // Calculate time components
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Update the HTML elements
-    document.getElementById('days').innerText = days;
-    document.getElementById('hours').innerText = hours;
-    document.getElementById('minutes').innerText = minutes;
-    document.getElementById('seconds').innerText = seconds;
-
-    // If the countdown is over, display a message
-    if (distance < 0) {
-        document.querySelector('.countdown-timer').innerHTML = '<p>工作坊已開始！</p>';
-    }
-}
-
-// Update the countdown every second
-setInterval(updateCountdown, 1000);
-
-// Initial call to display the countdown immediately
-updateCountdown();
 <script>
 
     
