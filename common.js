@@ -5,14 +5,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileMenu = document.querySelector('.mobile-menu');
     
     if (mobileMenuButton && mobileMenu && mobileMenuClose) {
-        // 打開菜單
+        // 切換菜單
         mobileMenuButton.addEventListener('click', function() {
-            mobileMenu.classList.add('active');
+            const isActive = mobileMenu.classList.toggle('active');
+            mobileMenuButton.setAttribute('aria-expanded', isActive);
         });
         
-        // 關閉菜單
+        // 關閉菜單（保留關閉按鈕功能）
         mobileMenuClose.addEventListener('click', function() {
             mobileMenu.classList.remove('active');
+            mobileMenuButton.setAttribute('aria-expanded', 'false');
         });
         
         // 點擊菜單項後自動關閉菜單
