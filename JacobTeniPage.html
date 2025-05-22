@@ -578,20 +578,29 @@ body {
             <div class="lg:col-span-2">
                 <div class="bg-white p-6 rounded-lg vintage-border mb-8">
                     <h3 class="text-2xl font-bold mb-4">售價資訊</h3>
-                    <div class="space-y-6">
-                        <div class="mt-16">
-                            <div class="text-center mb-8">
+                    <div class="space-y-4">
+                        <div>
+                            <div class="text-center mb-4">
                                 <!-- <h3 class="text-2xl md:text-3xl font-bold mb-4">Workshop Price</h3> -->
                                 <p class="text-lg max-w-2xl mx-auto">報名參加工作坊,即可免費參加週五，週六舞會。</p>
                             </div>
                             
-                            <div class="bg-white p1 rounded-lg">
-                                <img src="price.jpg" alt="Jacob&Teni" class="w-full rounded-lg">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                             <!-- 可點擊的圖片 -->
+        <div class="bg-white p-1 rounded-lg cursor-pointer" onclick="openModal()">
+            <img src="price.jpg" alt="Jacob&Teni" class="w-full rounded-lg">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 圖片彈出模態框 -->
+  <div id="imageModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-75 flex items-center justify-center p-4">
+    <div class="relative max-w-4xl w-full">
+      <button onclick="closeModal()" class="absolute -top-10 right-0 text-white text-3xl hover:text-gray-300">&times;</button>
+      <img src="price.jpg" alt="放大預覽" class="w-full rounded-lg">
+    </div>
+  </div>
         </div>
     </div>
 </section>
