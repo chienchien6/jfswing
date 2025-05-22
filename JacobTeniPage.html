@@ -595,7 +595,7 @@ body {
   </div>
   
   <!-- 圖片彈出模態框 -->
-  <div id="imageModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-75 flex items-center justify-center p-4">
+  <div id="PriceimageModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-75 flex items-center justify-center p-4">
     <div class="relative max-w-4xl w-full">
       <button onclick="closeModal()" class="absolute -top-10 right-0 text-white text-3xl hover:text-gray-300">&times;</button>
       <img src="price.jpg" alt="放大預覽" class="w-full rounded-lg">
@@ -824,6 +824,15 @@ body {
   }
   function closeModal() {
     document.getElementById('imageModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  }
+
+  function openModal() {
+    document.getElementById('PriceimageModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('PriceimageModal').classList.add('hidden');
     document.body.style.overflow = 'auto';
   }
 
