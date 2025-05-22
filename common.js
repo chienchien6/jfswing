@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 倒數計時器邏輯
     const countdown = () => {
-        const countDate = new Date('September 1, 2024 09:00:00').getTime(); // 請將此處替換成實際的工作坊開始日期和時間
+        const countDate = new Date('July 11, 2025 20:00:00').getTime(); // 請將此處替換成實際的工作坊開始日期和時間
         const now = new Date().getTime();
         const gap = countDate - now;
 
