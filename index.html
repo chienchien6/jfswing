@@ -88,7 +88,14 @@
           "description": "適合初學者的基礎搖擺舞課程",
           "courseMode": "OFFLINE",
           "courseWorkload": "PT1H30M",
-          "courseSchedule": "每週二 20:00-22:00",
+          "courseSchedule": {
+            "@type": "Schedule",
+            "repeatFrequency": "WEEKLY",
+            "byDay": "TU",
+            "startTime": "20:00",
+            "endTime": "22:00",
+            "repeatCount": 8
+          },
           "location": {
             "@type": "Place",
             "name": "JFSwing舞蹈教室",
@@ -105,7 +112,14 @@
           "description": "練習基本舞步的腳步和節奏",
           "courseMode": "OFFLINE",
           "courseWorkload": "PT2H",
-          "courseSchedule": "每週六 17:30-19:30",
+          "courseSchedule": {
+            "@type": "Schedule",
+            "repeatFrequency": "WEEKLY",
+            "byDay": "SA",
+            "startTime": "17:30",
+            "endTime": "19:30",
+            "repeatCount": 8
+          },
           "location": {
             "@type": "Place",
             "name": "JFSwing舞蹈教室",
