@@ -585,7 +585,7 @@ body {
                             </div>
                             
                              <!-- 可點擊的圖片 -->
-        <div class="bg-white p-1 rounded-lg cursor-pointer" onclick="openModal()">
+        <div class="bg-white p-1 rounded-lg cursor-pointer" onclick="openModalP()">
             <img src="price.jpg" alt="Jacob&Teni" class="w-full rounded-lg">
           </div>
         </div>
@@ -596,7 +596,7 @@ body {
   <!-- 圖片彈出模態框 -->
   <div id="PriceimageModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-75 flex items-center justify-center p-4">
     <div class="relative max-w-4xl w-full">
-      <button onclick="closeModal()" class="absolute -top-10 right-0 text-white text-3xl hover:text-gray-300">&times;</button>
+      <button onclick="closeModalP()" class="absolute -top-10 right-0 text-white text-3xl hover:text-gray-300">&times;</button>
       <img src="price.jpg" alt="放大預覽" class="w-full rounded-lg">
     </div>
   </div>
@@ -841,11 +841,11 @@ body {
     document.body.style.overflow = 'auto';
   }
 
-  function openModal() {
+  function openModalP() {
     document.getElementById('PriceimageModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   }
-  function closeModal() {
+  function closeModalP() {
     document.getElementById('PriceimageModal').classList.add('hidden');
     document.body.style.overflow = 'auto';
   }
