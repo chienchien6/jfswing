@@ -453,59 +453,95 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Workshop 1 - Regular Card -->
-                <div class="p-6 flex flex-col justify-center items-center vintage-border bg-white" style="
-                        background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
-                                    url('./JacobTeni.jpg');
-                        background-size: cover;
-                        background-position: center;">
-                    <h3 class="text-xl font-bold mb-3 text-purple-500 bg-white px-2 py-1 inline-block"><strong>Balboa 工作坊</strong></h3>
-                    <p class="text-sm text-center mb-4 font-bold">今年夏天，JF大手筆邀請來自美國洛杉磯Jacob &amp;紐約Teni。Balboa 的狂熱份子，和我們一起來探索波波的樂趣吧！</p>
-                    <p class="mt-2 font-bold">7月11-13日</p>
-                    <a href="JacobTeniPage.html" 
-                    target="_blank"
-                    class="btn-swing bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mt-4 inline-block">
-                    Jacob & Teni活動頁
-                 </a>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScWBGeiVmfXL3hLfcdAYP2BSFyOoLlNZbH8iFXlZ5YuuKYvpw/viewform" 
-                    target="_blank"
-                    class="btn-swing bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded mt-4 inline-block">
-                    立即報名
-                 </a>
-                </div>
-                
-                <!-- Workshop 2 - Regular Card -->
-                <div class="p-6 flex flex-col justify-center items-center vintage-border bg-white" style="
-                background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
-                            url('./Jo.jpg');
-                background-size: cover;
-                background-position: center;">
-                    <h3 class="text-xl font-bold mb-3 text-orange-500 bg-white px-2 py-1 inline-block text-center">The Fabulous Solo Workshop<br> with Jo Hoffberg </h3>
-                    <p style="opacity: 0;">  1  </p>
-                    <p style="opacity: 0;">  1  </p>
-                    <p style="opacity: 0;">  11  </p>
-                    <p class="text-sm text-center mb-4 font-bold">Solo Jazz夏令營，特別邀請國際舞者帶來精彩的工作坊。深入學習獨舞技巧，展現你的個人風格與創意。</p>
-                    <p class="mt-2 font-bold">7月25-27日</p>
-                    <a href="https://www.facebook.com/share/1BebjzENLt/" 
-                    target="_blank"
-                    class="btn-swing bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded mt-4 inline-block">
-                    立即報名
-                 </a>
-                </div>
-                
-                <!-- Workshop 3 - Flip Card -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front bg-teal-500 text-white p-6 flex flex-col justify-center items-center vintage-border">
-                            <h3 class="text-2xl font-bold mb-4">Lindy Hop Workshop</h3>
-                            <p class="text-center">9月26-28日</p>
-                            <p class="mt-4 text-sm">待公佈,敬請期待</p>
+                <!-- Workshop 1 - Balboa Card (Modified to match style) -->
+                <div class="vintage-border bg-white flex flex-col overflow-hidden">
+                    <div class="relative flex-grow">
+                        <!-- Main Image -->
+                        <img src="./JacobTeni.jpg" alt="Jacob & Teni Balboa" class="w-full h-full object-cover">
+                        
+                        <!-- Title Overlay -->
+                        <div class="absolute top-6 left-1/2 -translate-x-1/2 bg-white px-6 py-3 rounded-lg shadow-md max-w-[90%] z-10">
+                            <h3 class="text-xl md:text-2xl font-bold text-purple-500 text-center leading-tight">
+                                Balboa 工作坊
+                            </h3>
                         </div>
-                        <div class="flip-card-back bg-white p-6 flex flex-col justify-center items-center vintage-border">
-                            <h3 class="text-xl font-bold mb-3 text-teal-500">Lindy Hop Workshop</h3>
-                            <p class="text-sm text-center mb-4">待公佈,敬請期待!</p>
-                            <p class="mt-2 font-bold">9月26-28日</p>
-                            <!-- <button class="btn-swing bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded mt-4">立即報名</button> -->
+
+                        <!-- Content Overlay (Description, Date, Buttons) -->
+                        <div class="absolute bottom-0 left-0 right-0 p-6 bg-gray-800 bg-opacity-80 text-white z-10">
+                            <p class="text-sm text-center mb-4 leading-relaxed">
+                                今年夏天，JF大手筆邀請來自美國洛杉磯Jacob &紐約Teni。Balboa 的狂熱份子，和我們一起來探索波波的樂趣吧！
+                            </p>
+                            <p class="mt-2 text-xl font-bold text-center mb-6">7月11-13日</p>
+                            <div class="text-center flex flex-col items-center space-y-4"> <!-- Use flex-col for stacking buttons -->
+                                <a href="JacobTeniPage.html" 
+                                target="_blank"
+                                class="btn-swing bg-blue-500 hover:bg-blue-600 text-white py-3 px-8 rounded inline-block text-lg font-semibold">
+                                Jacob & Teni活動頁
+                                </a>
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLScWBGeiVmfXL3hLfcdAYP2BSFyOoLlNZbH8iFXlZ5YuuKYvpw/viewform" 
+                                target="_blank"
+                                class="btn-swing bg-purple-500 hover:bg-purple-600 text-white py-3 px-8 rounded inline-block text-lg font-semibold">
+                                立即報名
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Workshop 2 - Solo Jazz (Already in desired style) -->
+                <div class="vintage-border bg-white flex flex-col overflow-hidden">
+                    <div class="relative flex-grow">
+                        <img src="./Jo.jpg" alt="Jo Hoffberg" class="w-full h-full object-cover">
+                        
+                        <!-- Title overlayed directly on the image -->
+                        <div class="absolute top-6 left-1/2 -translate-x-1/2 bg-white px-6 py-3 rounded-lg shadow-md max-w-[90%] z-10">
+                            <h3 class="text-xl md:text-2xl font-bold text-orange-500 text-center leading-tight">
+                                The Fabulous Solo Workshop<br> with Jo Hoffberg
+                            </h3>
+                        </div>
+
+                        <!-- Text and button overlay on the image's bottom part -->
+                        <div class="absolute bottom-0 left-0 right-0 p-6 bg-gray-800 bg-opacity-80 text-white z-10"> <!-- Semi-transparent dark overlay -->
+                            <p class="text-sm text-center mb-4 leading-relaxed">
+                                Solo Jazz夏令營，特別邀請國際舞者帶來精彩的工作坊。深入學習獨舞技巧，展現你的個人風格與創意。
+                            </p>
+                            <p class="mt-2 text-xl font-bold text-center mb-6">7月25-27日</p>
+                            <div class="text-center">
+                                <a href="https://www.facebook.com/share/1BebjzENLt/"
+                                    target="_blank"
+                                    class="btn-swing bg-orange-500 hover:bg-orange-600 text-white py-3 px-8 rounded inline-block text-lg font-semibold">
+                                    立即報名
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Workshop 3 - Lindy Hop Card (Modified to match style) -->
+                <div class="vintage-border bg-white flex flex-col overflow-hidden">
+                    <div class="relative flex-grow">
+                        <!-- Main Image (Placeholder - please replace with actual Lindy Hop image) -->
+                        <img src="./LindyHop.jpg" alt="Lindy Hop Workshop" class="w-full h-full object-cover"> 
+                        
+                        <!-- Title Overlay -->
+                        <div class="absolute top-6 left-1/2 -translate-x-1/2 bg-white px-6 py-3 rounded-lg shadow-md max-w-[90%] z-10">
+                            <h3 class="text-xl md:text-2xl font-bold text-teal-500 text-center leading-tight">
+                                Lindy Hop Workshop
+                            </h3>
+                        </div>
+
+                        <!-- Content Overlay (Description, Date, Placeholder Text) -->
+                        <div class="absolute bottom-0 left-0 right-0 p-6 bg-gray-800 bg-opacity-80 text-white z-10">
+                            <p class="text-sm text-center mb-4 leading-relaxed">
+                                待公佈,敬請期待!
+                            </p>
+                            <p class="mt-2 text-xl font-bold text-center mb-6">9月26-28日</p>
+                            <div class="text-center">
+                                <!-- Placeholder text instead of button -->
+                                <p class="text-lg font-semibold text-gray-400 py-3 px-8 inline-block">
+                                    待公佈,敬請期待
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
